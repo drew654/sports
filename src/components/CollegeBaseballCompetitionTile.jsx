@@ -1,31 +1,23 @@
 const CollegeBaseballCompetitionTile = ({ competition }) => {
   return (
-    <div className="p-4 border rounded shadow select-none flex items-center justify-between">
+    <div className="flex items-center p-4 border rounded shadow select-none min-w-0">
       <div className="flex-1 min-w-0">
-        <h2 className="text-lg font-bold truncate select-none">
-          {competition.competitors[0].team.displayName}
-        </h2>
-        <h2 className="text-lg font-bold truncate select-none">
-          {competition.competitors[1].team.displayName}
-        </h2>
-      </div>
-      <div>
-        <div className="flex items-center">
-          <div className="px-4">
-            <h2 className="font-mono font-bold select-none">
-              {competition.competitors[0].score}
+        {[0, 1].map((i) => (
+          <div key={i} className="flex items-center justify-between ">
+            <h2 className="text-lg font-bold truncate min-w-0 select-none">
+              {competition.competitors[i].team.displayName}
             </h2>
-            <h2 className="font-mono font-bold select-none">
-              {competition.competitors[1].score}
+            <h2 className="font-mono font-bold select-none px-4">
+              {competition.competitors[i].score}
             </h2>
           </div>
-          {competition.status.type.name === "STATUS_FINAL" && (
-            <h2 className="border-l p-4 select-none">
-              {competition.status.type.description}
-            </h2>
-          )}
-        </div>
+        ))}
       </div>
+      {competition.status.type.name === "STATUS_FINAL" && (
+        <h2 className="border-l p-4 text-center select-none">
+          {competition.status.type.description}
+        </h2>
+      )}
     </div>
   );
 };
