@@ -2,8 +2,8 @@ const CollegeBaseballCompetitionTile = ({ competition }) => {
   return (
     <div className="p-4 border rounded shadow">
       <div className="flex items-center">
-        <div className="pr-4">
-          <div className="flex justify-between items-center w-50">
+        <div className="pr-4 w-full">
+          <div className="flex justify-between items-center">
             <h2
               className="text-lg font-bold truncate max-w-[150px]"
               title={competition.competitors[0].team.displayName}
@@ -14,7 +14,7 @@ const CollegeBaseballCompetitionTile = ({ competition }) => {
               {competition.competitors[0].score}
             </h2>
           </div>
-          <div className="flex justify-between items-center w-50">
+          <div className="flex justify-between items-center">
             <h2
               className="text-lg font-bold truncate max-w-[150px]"
               title={competition.competitors[1].team.displayName}
