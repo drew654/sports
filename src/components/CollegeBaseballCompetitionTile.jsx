@@ -10,7 +10,9 @@ const CollegeBaseballCompetitionTile = ({ competition }) => {
             >
               {competition.competitors[0].team.displayName}
             </h2>
-            <h2 className="font-mono">{competition.competitors[0].score}</h2>
+            <h2 className="font-mono font-bold">
+              {competition.competitors[0].score}
+            </h2>
           </div>
           <div className="flex justify-between items-center w-50">
             <h2
@@ -19,7 +21,9 @@ const CollegeBaseballCompetitionTile = ({ competition }) => {
             >
               {competition.competitors[1].team.displayName}
             </h2>
-            <h2 className="font-mono">{competition.competitors[1].score}</h2>
+            <h2 className="font-mono font-bold">
+              {competition.competitors[1].score}
+            </h2>
           </div>
         </div>
         <div className="border-l p-4">
