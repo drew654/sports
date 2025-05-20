@@ -1,28 +1,32 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   fetchData,
   formatDateToMonthDay,
   getDayAbbreviation,
 } from "../../../../utilities";
 import CollegeBaseballCompetitionTile from "../../../../components/CollegeBaseballCompetitionTile";
+import { formatDateToYYYYMMDD } from "../../../../utilities";
 
 const CollegeBaseballScoreboard = () => {
   const apiURL =
     "https://site.api.espn.com/apis/site/v2/sports/baseball/college-baseball/scoreboard";
 
-  const [events, setEvents] = React.useState([]);
-  const [league, setLeague] = React.useState(null);
-  const [selectedDate, setSelectedDate] = React.useState(new Date());
+  const [events, setEvents] = useState([]);
+  const [league, setLeague] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
+  const fetchEvents = async (urlDate) => {
+    const dateParam = urlDate ? `?dates=${urlDate}` : "";
+    const apiURLWithDate = `${apiURL}${dateParam}`;
+    const data = await fetchData(apiURLWithDate);
+    setEvents(data["events"] || []);
+    setLeague(
+      data["leagues"].find((league) => league.name === "NCAA Baseball")
+    );
+  };
 
   useEffect(() => {
-    const fetchEvents = async () => {
-      const data = await fetchData(apiURL);
-      setEvents(data["events"] || []);
-      setLeague(
-        data["leagues"].find((league) => league.name === "NCAA Baseball")
-      );
-    };
     fetchEvents();
   }, []);
 
@@ -39,7 +43,10 @@ const CollegeBaseballScoreboard = () => {
                   ? "bg-white text-black"
                   : ""
               } flex-shrink-0 p-2 text-center`}
-              onClick={() => setSelectedDate(new Date(day))}
+              onClick={() => {
+                setSelectedDate(new Date(day));
+                fetchEvents(formatDateToYYYYMMDD(day));
+              }}
             >
               <h2 className="text-center select-none">
                 {getDayAbbreviation(day)}

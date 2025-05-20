@@ -27,9 +27,11 @@ const CollegeBaseballCompetitionTile = ({ competition }) => {
           </h2>
         )}
       </div>
-      <h3 className="pt-2 pl-2 text-xs select-none">
-        {competition.notes[0].headline}
-      </h3>
+      {competition?.notes[0]?.headline && (
+        <h3 className="pt-2 pl-2 text-xs select-none">
+          {competition.notes[0].headline}
+        </h3>
+      )}
     </div>
   );
 };
