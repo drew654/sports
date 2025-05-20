@@ -13,6 +13,7 @@ const CollegeBaseballScoreboard = () => {
 
   const [events, setEvents] = React.useState([]);
   const [league, setLeague] = React.useState(null);
+  const [selectedDate, setSelectedDate] = React.useState(new Date());
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -29,9 +30,17 @@ const CollegeBaseballScoreboard = () => {
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4 select-none">NCAA Baseball</h1>
       {league && (
-        <div className="flex mb-4 overflow-x-auto max-w-full">
+        <div className="flex mb-4 overflow-x-auto max-w-full no-scrollbar">
           {league.calendar.map((day) => (
-            <div key={day} className="border flex-shrink-0 p-2 text-center">
+            <div
+              key={day}
+              className={` ${
+                new Date(day).toDateString() === selectedDate.toDateString()
+                  ? "bg-white text-black"
+                  : ""
+              } flex-shrink-0 p-2 text-center`}
+              onClick={() => setSelectedDate(new Date(day))}
+            >
               <h2 className="text-center select-none">
                 {getDayAbbreviation(day)}
               </h2>
