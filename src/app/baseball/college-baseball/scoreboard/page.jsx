@@ -1,11 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import {
-  fetchData,
-  formatDateToMonthDay,
-  getDayAbbreviation,
-} from "../../../../utilities";
+import { fetchData } from "../../../../utilities";
 import CollegeBaseballCompetitionTile from "../../../../components/CollegeBaseballCompetitionTile";
+import DateSelector from "../../../../components/DateSelector";
 import { formatDateToYYYYMMDD } from "../../../../utilities";
 
 const CollegeBaseballScoreboard = () => {
@@ -30,55 +27,18 @@ const CollegeBaseballScoreboard = () => {
     fetchEvents();
   }, []);
 
-  const calendarRef = React.useRef(null);
-  const selectedDayRef = React.useRef(null);
-
-  useEffect(() => {
-    if (calendarRef.current && selectedDayRef.current) {
-      const container = calendarRef.current;
-      const selected = selectedDayRef.current;
-      const scrollLeft =
-        selected.offsetLeft -
-        container.offsetLeft -
-        container.clientWidth / 2 +
-        selected.clientWidth / 2;
-      container.scrollTo({ left: scrollLeft, behavior: "smooth" });
-    }
-  }, [league, selectedDate]);
-
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4 select-none">NCAA Baseball</h1>
       {league && (
-        <div
-          className="flex mb-4 overflow-x-auto max-w-full no-scrollbar"
-          ref={calendarRef}
-        >
-          {league.calendar.map((day) => {
-            const isSelected =
-              new Date(day).toDateString() === selectedDate.toDateString();
-            return (
-              <div
-                key={day}
-                ref={isSelected ? selectedDayRef : null}
-                className={`${
-                  isSelected ? "bg-white text-black" : ""
-                } flex-shrink-0 p-2 text-center`}
-                onClick={() => {
-                  setSelectedDate(new Date(day));
-                  fetchEvents(formatDateToYYYYMMDD(day));
-                }}
-              >
-                <h2 className="text-center select-none">
-                  {getDayAbbreviation(day)}
-                </h2>
-                <h2 className="text-center select-none">
-                  {formatDateToMonthDay(day)}
-                </h2>
-              </div>
-            );
-          })}
-        </div>
+        <DateSelector
+          league={league}
+          selectedDate={selectedDate}
+          setSelectedDate={(date) => {
+            setSelectedDate(date);
+            fetchEvents(formatDateToYYYYMMDD(date));
+          }}
+        />
       )}
       <div className="grid grid-cols-1 gap-4">
         {events.map((event, index) => (
