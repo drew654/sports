@@ -41,12 +41,16 @@ const CollegeBaseballScoreboard = () => {
         />
       )}
       <div className="grid grid-cols-1 gap-4">
-        {events.map((event, index) => (
-          <CollegeBaseballCompetitionTile
-            key={index}
-            competition={event.competitions[0]}
-          />
-        ))}
+        {events.flatMap((event) =>
+          event.competitions.map((competition) => {
+            return (
+              <CollegeBaseballCompetitionTile
+                key={competition.id}
+                competition={competition}
+              />
+            );
+          })
+        )}
       </div>
     </div>
   );
