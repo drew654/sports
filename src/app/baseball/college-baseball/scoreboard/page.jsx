@@ -4,13 +4,13 @@ import { fetchData } from "../../../../utilities";
 import CollegeBaseballCompetitionTile from "../../../../components/CollegeBaseballCompetitionTile";
 import DateSelector from "../../../../components/DateSelector";
 import { formatDateToYYYYMMDD } from "../../../../utilities";
-import { sortEventCompetitionsByStatus } from "../../../../utilities";
+import { getSortedCompetitionsByStatus } from "../../../../utilities";
 
 const CollegeBaseballScoreboard = () => {
   const apiURL =
     "https://site.api.espn.com/apis/site/v2/sports/baseball/college-baseball/scoreboard";
 
-  const [events, setEvents] = useState([]);
+  const [competitions, setCompetitions] = useState([]);
   const [league, setLeague] = useState(null);
   const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -18,8 +18,10 @@ const CollegeBaseballScoreboard = () => {
     const dateParam = urlDate ? `?dates=${urlDate}` : "";
     const apiURLWithDate = `${apiURL}${dateParam}`;
     const data = await fetchData(apiURLWithDate);
-    const sortedEvents = sortEventCompetitionsByStatus(data["events"] || []);
-    setEvents(sortedEvents);
+    const sortedCompetitions = getSortedCompetitionsByStatus(
+      data["events"] || []
+    );
+    setCompetitions(sortedCompetitions);
     setLeague(
       data["leagues"].find((league) => league.name === "NCAA Baseball")
     );
@@ -43,16 +45,12 @@ const CollegeBaseballScoreboard = () => {
         />
       )}
       <div className="grid grid-cols-1 gap-4">
-        {events.flatMap((event) =>
-          event.competitions.map((competition) => {
-            return (
-              <CollegeBaseballCompetitionTile
-                key={competition.id}
-                competition={competition}
-              />
-            );
-          })
-        )}
+        {competitions.map((competition) => (
+          <CollegeBaseballCompetitionTile
+            key={competition.id}
+            competition={competition}
+          />
+        ))}
       </div>
     </div>
   );

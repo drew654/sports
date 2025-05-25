@@ -29,9 +29,19 @@ const CollegeBaseballCompetitionTile = ({ competition }) => {
             </div>
           ))}
         </div>
+        {competition.status.type.name === "STATUS_RAIN_DELAY" && (
+          <h2 className="border-l p-2 text-center select-none text-base">
+            {competition.status.type.shortDetail}
+          </h2>
+        )}
         {competition.status.type.name === "STATUS_FINAL" && (
           <h2 className="border-l p-2 text-center select-none text-base">
             {competition.status.type.description}
+          </h2>
+        )}
+        {competition.status.type.name === "STATUS_SCHEDULED" && (
+          <h2 className="border-l p-2 text-center select-none text-base">
+            {competition.status.type.shortDetail}
           </h2>
         )}
       </div>

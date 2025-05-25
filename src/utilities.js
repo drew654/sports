@@ -46,20 +46,19 @@ export const formatDateToYYYYMMDD = (date) => {
   return `${year}${month}${day}`;
 };
 
-export const sortEventCompetitionsByStatus = (events) => {
-  return events.map((event) => {
-    event.competitions.sort((a, b) => {
-      const statusA = a.status.type.name;
-      const statusB = b.status.type.name;
+export const getSortedCompetitionsByStatus = (events) => {
+  const statusOrder = {
+    STATUS_RAIN_DELAY: 0,
+    STATUS_IN_PROGRESS: 1,
+    STATUS_FINAL: 2,
+    STATUS_SCHEDULED: 3,
+  };
 
-      if (statusA === "STATUS_FINAL" && statusB !== "STATUS_FINAL") {
-        return 1;
-      } else if (statusB === "STATUS_FINAL" && statusA !== "STATUS_FINAL") {
-        return -1;
-      } else {
-        return 0;
-      }
-    });
-    return event;
+  const allCompetitions = events.flatMap((event) => event.competitions);
+
+  return allCompetitions.sort((a, b) => {
+    const statusA = statusOrder[a.status.type.name] ?? 99;
+    const statusB = statusOrder[b.status.type.name] ?? 99;
+    return statusA - statusB;
   });
 };
