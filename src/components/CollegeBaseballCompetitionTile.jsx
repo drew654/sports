@@ -4,7 +4,15 @@ const CollegeBaseballCompetitionTile = ({ competition }) => {
       <div className="flex items-center select-none min-w-0">
         <div className="flex-1 min-w-0 pl-2">
           {[0, 1].map((i) => (
-            <div key={i} className="flex items-center justify-between ">
+            <div
+              key={i}
+              className={`flex items-center justify-between ${
+                competition.competitors[i].winner ||
+                competition.status.type.name !== "STATUS_FINAL"
+                  ? ""
+                  : "opacity-50"
+              }`}
+            >
               <div className="flex items-center">
                 <img
                   src={competition.competitors[i].team.logo}
