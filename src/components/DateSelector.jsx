@@ -31,7 +31,7 @@ const DateSelector = ({ league, selectedDate, setSelectedDate }) => {
             key={day}
             ref={isSelected ? selectedDayRef : null}
             className={`${
-              isSelected ? "bg-white text-black" : ""
+              isSelected ? "bg-foreground text-background" : ""
             } flex-shrink-0 p-2 text-center`}
             onClick={() => {
               setSelectedDate(new Date(day));
