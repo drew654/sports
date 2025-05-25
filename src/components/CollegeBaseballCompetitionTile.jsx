@@ -34,14 +34,24 @@ const CollegeBaseballCompetitionTile = ({ competition }) => {
             {competition.status.type.shortDetail}
           </h2>
         )}
+        {competition.status.type.name === "STATUS_IN_PROGRESS" && (
+          <div className="border-l p-2 select-none text-base">
+            <h2 className="text-xs font-bold text-red-600 select-none text-base">
+              {competition.status.type.shortDetail}
+            </h2>
+            <h2 className="text-xs opacity-50 select-none text-base">
+              {competition.broadcast}
+            </h2>
+          </div>
+        )}
         {competition.status.type.name === "STATUS_FINAL" && (
-          <h2 className="border-l p-2 text-center select-none text-base">
+          <h2 className="border-l p-2 font-bold text-center select-none text-base">
             {competition.status.type.description}
           </h2>
         )}
         {competition.status.type.name === "STATUS_SCHEDULED" && (
           <div className="border-l p-2 select-none text-base">
-            <h2 className="text-xs opacity-50 select-none text-base">
+            <h2 className="text-xs font-bold opacity-50 select-none text-base">
               {new Date(competition.date).toLocaleTimeString([], {
                 hour: "numeric",
                 minute: "numeric",
