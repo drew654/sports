@@ -4,6 +4,7 @@ import { fetchData } from "../../../../utilities";
 import CollegeBaseballCompetitionTile from "../../../../components/CollegeBaseballCompetitionTile";
 import DateSelector from "../../../../components/DateSelector";
 import { formatDateToYYYYMMDD } from "../../../../utilities";
+import { sortEventCompetitionsByStatus } from "../../../../utilities";
 
 const CollegeBaseballScoreboard = () => {
   const apiURL =
@@ -17,7 +18,8 @@ const CollegeBaseballScoreboard = () => {
     const dateParam = urlDate ? `?dates=${urlDate}` : "";
     const apiURLWithDate = `${apiURL}${dateParam}`;
     const data = await fetchData(apiURLWithDate);
-    setEvents(data["events"] || []);
+    const sortedEvents = sortEventCompetitionsByStatus(data["events"] || []);
+    setEvents(sortedEvents);
     setLeague(
       data["leagues"].find((league) => league.name === "NCAA Baseball")
     );
