@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { fetchData } from "../../../../utilities";
-import CollegeBaseballCompetitionTile from "../../../../components/CollegeBaseballCompetitionTile";
+import BaseballCompetitionTile from "../../../../components/CollegeBaseballCompetitionTile";
 import DateSelector from "../../../../components/DateSelector";
 import { formatDateToYYYYMMDD } from "../../../../utilities";
 import { getSortedCompetitionsByStatus } from "../../../../utilities";
@@ -46,7 +46,7 @@ const CollegeBaseballScoreboard = () => {
       )}
       <div className="grid grid-cols-1 gap-4">
         {competitions.map((competition) => (
-          <CollegeBaseballCompetitionTile
+          <BaseballCompetitionTile
             key={competition.id}
             competition={competition}
           />

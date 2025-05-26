@@ -1,4 +1,4 @@
-const CollegeBaseballCompetitionTile = ({ competition }) => {
+const BaseballCompetitionTile = ({ competition }) => {
   return (
     <div className="border rounded shadow p-2">
       <div className="flex items-center select-none min-w-0">
@@ -70,4 +70,4 @@ const CollegeBaseballCompetitionTile = ({ competition }) => {
   );
 };
 
-export default CollegeBaseballCompetitionTile;
+export default BaseballCompetitionTile;
