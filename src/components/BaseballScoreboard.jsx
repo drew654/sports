@@ -6,25 +6,21 @@ import DateSelector from "../components/DateSelector";
 import { formatDateToYYYYMMDD } from "../utilities";
 import { getSortedCompetitionsByStatus } from "../utilities";
 
-const CollegeBaseballScoreboard = () => {
-  const apiURL =
-    "https://site.api.espn.com/apis/site/v2/sports/baseball/college-baseball/scoreboard";
-
+const BaseballScoreboard = ({ slug, id }) => {
+  const apiUrl = `https://site.api.espn.com/apis/site/v2/sports/baseball/${slug}/scoreboard`;
   const [competitions, setCompetitions] = useState([]);
   const [league, setLeague] = useState(null);
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   const fetchEvents = async (urlDate) => {
     const dateParam = urlDate ? `?dates=${urlDate}` : "";
-    const apiURLWithDate = `${apiURL}${dateParam}`;
+    const apiURLWithDate = `${apiUrl}${dateParam}`;
     const data = await fetchData(apiURLWithDate);
     const sortedCompetitions = getSortedCompetitionsByStatus(
       data["events"] || []
     );
     setCompetitions(sortedCompetitions);
-    setLeague(
-      data["leagues"].find((league) => league.name === "NCAA Baseball")
-    );
+    setLeague(data["leagues"].find((league) => league.id === id));
   };
 
   useEffect(() => {
@@ -33,16 +29,18 @@ const CollegeBaseballScoreboard = () => {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4 select-none">NCAA Baseball</h1>
       {league && (
-        <DateSelector
-          league={league}
-          selectedDate={selectedDate}
-          setSelectedDate={(date) => {
-            setSelectedDate(date);
-            fetchEvents(formatDateToYYYYMMDD(date));
-          }}
-        />
+        <>
+          <h1 className="text-2xl font-bold mb-4 select-none">{league.name}</h1>
+          <DateSelector
+            league={league}
+            selectedDate={selectedDate}
+            setSelectedDate={(date) => {
+              setSelectedDate(date);
+              fetchEvents(formatDateToYYYYMMDD(date));
+            }}
+          />
+        </>
       )}
       <div className="grid grid-cols-1 gap-4">
         {competitions.map((competition) => (
@@ -56,4 +54,4 @@ const CollegeBaseballScoreboard = () => {
   );
 };
 
-export default CollegeBaseballScoreboard;
+export default BaseballScoreboard;
