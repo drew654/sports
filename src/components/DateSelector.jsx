@@ -1,7 +1,24 @@
 import React, { useEffect } from "react";
-import { formatDateToMonthDay, getDayAbbreviation } from "../utilities";
+import {
+  formatDateToMonthDay,
+  getDayAbbreviation,
+  getAllDatesInRange,
+} from "../utilities";
 
 const DateSelector = ({ league, selectedDate, setSelectedDate }) => {
+  const startDate = new Date(league.calendarStartDate);
+  const endDate = new Date(league.calendarEndDate);
+
+  const calendar = league.calendarIsWhitelist
+    ? league.calendar
+    : getAllDatesInRange(startDate, endDate).filter(
+        (date) =>
+          !league.calendar.some(
+            (excluded) =>
+              new Date(excluded).toDateString() === date.toDateString()
+          )
+      );
+
   const calendarRef = React.useRef(null);
   const selectedDayRef = React.useRef(null);
 
@@ -23,7 +40,7 @@ const DateSelector = ({ league, selectedDate, setSelectedDate }) => {
       className="flex mb-4 overflow-x-auto max-w-full no-scrollbar"
       ref={calendarRef}
     >
-      {league.calendar.map((day) => {
+      {calendar.map((day) => {
         const isSelected =
           new Date(day).toDateString() === selectedDate.toDateString();
         return (

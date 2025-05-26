@@ -3,6 +3,7 @@
 const Sports = () => {
   const sports = [
     { name: "NCAA Baseball", path: "/baseball/college-baseball/scoreboard" },
+    { name: "Major League Baseball", path: "/baseball/mlb/scoreboard" },
   ];
 
   return (
