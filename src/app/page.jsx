@@ -2,8 +2,8 @@
 
 const Sports = () => {
   const sports = [
-    { name: "NCAA Baseball", path: "/baseball/college-baseball/scoreboard" },
-    { name: "Major League Baseball", path: "/baseball/mlb/scoreboard" },
+    { name: "NCAA Baseball", path: "scoreboard/college-baseball" },
+    { name: "Major League Baseball", path: "scoreboard/mlb" },
   ];
 
   return (

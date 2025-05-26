@@ -1,14 +1,14 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { fetchData } from "../../../../utilities";
-import BaseballCompetitionTile from "../../../../components/CollegeBaseballCompetitionTile";
-import DateSelector from "../../../../components/DateSelector";
-import { formatDateToYYYYMMDD } from "../../../../utilities";
-import { getSortedCompetitionsByStatus } from "../../../../utilities";
+import { fetchData } from "../utilities";
+import BaseballCompetitionTile from "../components/BaseballCompetitionTile";
+import DateSelector from "../components/DateSelector";
+import { formatDateToYYYYMMDD } from "../utilities";
+import { getSortedCompetitionsByStatus } from "../utilities";
 
-const CollegeBaseballScoreboard = () => {
+const MLBScoreboard = () => {
   const apiURL =
-    "https://site.api.espn.com/apis/site/v2/sports/baseball/college-baseball/scoreboard";
+    "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/scoreboard";
 
   const [competitions, setCompetitions] = useState([]);
   const [league, setLeague] = useState(null);
@@ -23,7 +23,7 @@ const CollegeBaseballScoreboard = () => {
     );
     setCompetitions(sortedCompetitions);
     setLeague(
-      data["leagues"].find((league) => league.name === "NCAA Baseball")
+      data["leagues"].find((league) => league.name === "Major League Baseball")
     );
   };
 
@@ -33,7 +33,9 @@ const CollegeBaseballScoreboard = () => {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4 select-none">NCAA Baseball</h1>
+      <h1 className="text-2xl font-bold mb-4 select-none">
+        Major League Baseball
+      </h1>
       {league && (
         <DateSelector
           league={league}
@@ -56,4 +58,4 @@ const CollegeBaseballScoreboard = () => {
   );
 };
 
-export default CollegeBaseballScoreboard;
+export default MLBScoreboard;
