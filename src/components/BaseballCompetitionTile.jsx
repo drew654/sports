@@ -46,6 +46,9 @@ const BaseballCompetitionTile = ({ competition }) => {
               {competition.status.type.shortDetail}
             </h2>
             <h2 className="text-xs opacity-50 select-none text-base">
+              {competition.outsText}
+            </h2>
+            <h2 className="text-xs opacity-50 select-none text-base">
               {renderBroadcast(competition.broadcast)}
             </h2>
           </div>
