@@ -1,4 +1,14 @@
 const BaseballCompetitionTile = ({ competition }) => {
+  const renderBroadcast = (broadcast) => {
+    if (!broadcast) return null;
+    return broadcast.split("/").map((part, idx) => (
+      <span key={idx}>
+        {part.trim()}
+        {idx < broadcast.split("/").length - 1 && <br />}
+      </span>
+    ));
+  };
+
   return (
     <div className="border rounded shadow p-2">
       <div className="flex items-center select-none min-w-0">
@@ -31,24 +41,24 @@ const BaseballCompetitionTile = ({ competition }) => {
         </div>
         {(competition.status.type.name === "STATUS_IN_PROGRESS" ||
           competition.status.type.name === "STATUS_RAIN_DELAY") && (
-          <div className="border-l p-2 pl-4 min-w-[90px] select-none text-base">
+          <div className="border-l p-2 pl-4 min-w-[100px] select-none text-base">
             <h2 className="text-xs font-bold text-red-600 select-none text-base">
               {competition.status.type.shortDetail}
             </h2>
             <h2 className="text-xs opacity-50 select-none text-base">
-              {competition.broadcast}
+              {renderBroadcast(competition.broadcast)}
             </h2>
           </div>
         )}
         {competition.status.type.name === "STATUS_FINAL" && (
-          <div className="border-l p-2 pl-4 min-w-[90px]">
+          <div className="border-l p-2 pl-4 min-w-[100px]">
             <h2 className="font-bold select-none text-base">
               {competition.status.type.description}
             </h2>
           </div>
         )}
         {competition.status.type.name === "STATUS_SCHEDULED" && (
-          <div className="border-l p-2 pl-4 min-w-[90px] select-none text-base">
+          <div className="border-l p-2 pl-4 min-w-[100px] select-none text-base">
             <h2 className="text-xs font-bold opacity-50 select-none text-base">
               {new Date(competition.date).toLocaleTimeString([], {
                 hour: "numeric",
@@ -56,7 +66,7 @@ const BaseballCompetitionTile = ({ competition }) => {
               })}
             </h2>
             <h2 className="text-xs opacity-50 select-none text-base">
-              {competition.broadcast}
+              {renderBroadcast(competition.broadcast)}
             </h2>
           </div>
         )}
