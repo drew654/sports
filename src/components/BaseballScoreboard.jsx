@@ -24,7 +24,8 @@ const BaseballScoreboard = ({ slug, id }) => {
   };
 
   useEffect(() => {
-    fetchEvents();
+    const today = formatDateToYYYYMMDD(new Date());
+    fetchEvents(today);
   }, []);
 
   return (
