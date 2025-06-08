@@ -47,6 +47,8 @@ const BaseballScoreboard = ({ slug, id }) => {
         {competitions.map((competition) => (
           <BaseballCompetitionTile
             key={competition.id}
+            slug={slug}
+            date={formatDateToYYYYMMDD(selectedDate)}
             competition={competition}
           />
         ))}

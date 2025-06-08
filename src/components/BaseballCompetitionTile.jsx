@@ -1,6 +1,6 @@
 import BaseballBases from "./BaseballBases";
 
-const BaseballCompetitionTile = ({ competition }) => {
+const BaseballCompetitionTile = ({ slug, date, competition }) => {
   const renderBroadcast = (broadcast) => {
     if (!broadcast) return null;
     return broadcast.split("/").map((part, idx) => (
@@ -24,6 +24,9 @@ const BaseballCompetitionTile = ({ competition }) => {
                   ? ""
                   : "opacity-50"
               }`}
+              onClick={() => {
+                window.location.href = `/scoreboard/${slug}/${date}/${competition.id}`;
+              }}
             >
               <div className="flex items-center">
                 <img
