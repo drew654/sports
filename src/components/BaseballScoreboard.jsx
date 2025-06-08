@@ -19,7 +19,16 @@ const BaseballScoreboard = ({ slug, id }) => {
     const sortedCompetitions = getSortedCompetitionsByStatus(
       data["events"] || []
     );
-    setCompetitions(sortedCompetitions);
+    const sortedCompetitionsWithSortedCompetitors = sortedCompetitions.map(
+      (competition) => {
+        competition.competitors.sort((a, b) => {
+          if (a.homeAway === b.homeAway) return 0;
+          return a.homeAway === "home" ? 1 : -1;
+        });
+        return competition;
+      }
+    );
+    setCompetitions(sortedCompetitionsWithSortedCompetitors);
     setLeague(data["leagues"].find((league) => league.id === id));
   };
 
