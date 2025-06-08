@@ -62,7 +62,7 @@ const BaseballCompetitionPage = ({ params }) => {
             />
           </div>
         </div>
-        <h2 className="p-2">Scoring Summary</h2>
+        <h2 className="p-2 select-none">Scoring Summary</h2>
         <BaseballScoringSummary competition={competition} />
       </div>
     )

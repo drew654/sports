@@ -1,6 +1,6 @@
 const BaseballScoringSummary = ({ competition }) => {
   return (
-    <table className="w-full border">
+    <table className="w-full border text-sm sm:text-base select-none">
       <tbody>
         <tr>
           <th></th>
