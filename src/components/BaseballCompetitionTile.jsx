@@ -12,8 +12,8 @@ const BaseballCompetitionTile = ({ slug, date, competition }) => {
   };
 
   return (
-    <div className="border rounded shadow p-2">
-      <div className="flex items-center select-none min-w-0">
+    <div className="border rounded shadow p-2 select-none">
+      <div className="flex items-center min-w-0">
         <div className="flex-1 min-w-0 pl-2">
           {[0, 1].map((i) => (
             <div
@@ -34,11 +34,11 @@ const BaseballCompetitionTile = ({ slug, date, competition }) => {
                   alt={competition.competitors[i].team.displayName}
                   className="w-4 h-4 mr-2"
                 />
-                <h2 className="text-base font-bold truncate min-w-0 select-none">
+                <h2 className="font-bold truncate min-w-0">
                   {competition.competitors[i].team.displayName}
                 </h2>
               </div>
-              <h2 className="font-mono font-bold select-none px-4 text-base">
+              <h2 className="font-mono font-bold px-4">
                 {competition.competitors[i].score}
               </h2>
             </div>
@@ -46,15 +46,15 @@ const BaseballCompetitionTile = ({ slug, date, competition }) => {
         </div>
         {(competition.status.type.name === "STATUS_IN_PROGRESS" ||
           competition.status.type.name === "STATUS_RAIN_DELAY") && (
-          <div className="border-l p-2 pl-4 flex justify-between min-w-[150px] select-none text-base">
+          <div className="border-l p-2 pl-4 min-w-[150px] flex justify-between">
             <div>
-              <h2 className="text-xs font-bold text-red-600 select-none text-base">
+              <h2 className="text-xs font-bold text-red-600">
                 {competition.status.type.shortDetail}
               </h2>
-              <h2 className="text-xs opacity-50 select-none text-base">
+              <h2 className="text-xs opacity-50">
                 {competition.outsText}
               </h2>
-              <h2 className="text-xs opacity-50 select-none text-base">
+              <h2 className="text-xs opacity-50">
                 {renderBroadcast(competition.broadcast)}
               </h2>
             </div>
@@ -63,27 +63,27 @@ const BaseballCompetitionTile = ({ slug, date, competition }) => {
         )}
         {competition.status.type.name === "STATUS_FINAL" && (
           <div className="border-l p-2 pl-4 min-w-[150px]">
-            <h2 className="font-bold select-none text-base">
+            <h2 className="font-bold">
               {competition.status.type.description}
             </h2>
           </div>
         )}
         {competition.status.type.name === "STATUS_SCHEDULED" && (
-          <div className="border-l p-2 pl-4 min-w-[150px] select-none text-base">
-            <h2 className="text-xs font-bold opacity-50 select-none text-base">
+          <div className="border-l p-2 pl-4 min-w-[150px]">
+            <h2 className="text-xs font-bold opacity-50">
               {new Date(competition.date).toLocaleTimeString([], {
                 hour: "numeric",
                 minute: "numeric",
               })}
             </h2>
-            <h2 className="text-xs opacity-50 select-none text-base">
+            <h2 className="text-xs opacity-50">
               {renderBroadcast(competition.broadcast)}
             </h2>
           </div>
         )}
       </div>
       {competition?.notes[0]?.headline && (
-        <h3 className="pt-2 pl-2 text-xs select-none">
+        <h3 className="pt-2 pl-2 text-xs">
           {competition.notes[0].headline}
         </h3>
       )}
