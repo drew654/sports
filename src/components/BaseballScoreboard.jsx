@@ -12,6 +12,13 @@ const BaseballScoreboard = ({ slug, id }) => {
   const [league, setLeague] = useState(null);
   const [selectedDate, setSelectedDate] = useState(new Date());
 
+  const getLastCompetitionDate = async () => {
+    const data = await fetchData(apiUrl);
+    const calendar = data.leagues.find((league) => league.id === id).calendar;
+    const lastDate = calendar[calendar.length - 1];
+    return new Date(lastDate);
+  };
+
   const fetchEvents = async (urlDate) => {
     const dateParam = urlDate ? `?dates=${urlDate}` : "";
     const apiURLWithDate = `${apiUrl}${dateParam}`;
@@ -33,8 +40,16 @@ const BaseballScoreboard = ({ slug, id }) => {
   };
 
   useEffect(() => {
-    const today = formatDateToYYYYMMDD(new Date());
-    fetchEvents(today);
+    const init = async () => {
+      const today = new Date();
+      const lastCompetitionDate = await getLastCompetitionDate();
+      const dateToFetch =
+        today > lastCompetitionDate ? lastCompetitionDate : today;
+
+      fetchEvents(formatDateToYYYYMMDD(dateToFetch));
+      setSelectedDate(dateToFetch);
+    };
+    init();
   }, []);
 
   return (

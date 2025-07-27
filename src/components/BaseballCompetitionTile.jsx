@@ -43,7 +43,7 @@ const BaseballCompetitionTile = ({ slug, date, competition }) => {
         </div>
         <div className="flex flex-col items-center justify-end">
           {[0, 1].map((i) => (
-            <h2 className="font-mono font-bold px-4">
+            <h2 className="font-mono font-bold px-4" key={i}>
               {competition.competitors[i].score}
             </h2>
           ))}
