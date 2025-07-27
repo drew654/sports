@@ -38,10 +38,14 @@ const BaseballCompetitionTile = ({ slug, date, competition }) => {
                   {competition.competitors[i].team.displayName}
                 </h2>
               </div>
-              <h2 className="font-mono font-bold px-4">
-                {competition.competitors[i].score}
-              </h2>
             </div>
+          ))}
+        </div>
+        <div className="flex flex-col items-center justify-end">
+          {[0, 1].map((i) => (
+            <h2 className="font-mono font-bold px-4">
+              {competition.competitors[i].score}
+            </h2>
           ))}
         </div>
         {(competition.status.type.name === "STATUS_IN_PROGRESS" ||
@@ -51,9 +55,7 @@ const BaseballCompetitionTile = ({ slug, date, competition }) => {
               <h2 className="text-xs font-bold text-red-600">
                 {competition.status.type.shortDetail}
               </h2>
-              <h2 className="text-xs opacity-50">
-                {competition.outsText}
-              </h2>
+              <h2 className="text-xs opacity-50">{competition.outsText}</h2>
               <h2 className="text-xs opacity-50">
                 {renderBroadcast(competition.broadcast)}
               </h2>
@@ -63,9 +65,7 @@ const BaseballCompetitionTile = ({ slug, date, competition }) => {
         )}
         {competition.status.type.name === "STATUS_FINAL" && (
           <div className="border-l p-2 pl-4 min-w-[150px]">
-            <h2 className="font-bold">
-              {competition.status.type.description}
-            </h2>
+            <h2 className="font-bold">{competition.status.type.description}</h2>
           </div>
         )}
         {competition.status.type.name === "STATUS_SCHEDULED" && (
@@ -83,9 +83,7 @@ const BaseballCompetitionTile = ({ slug, date, competition }) => {
         )}
       </div>
       {competition?.notes[0]?.headline && (
-        <h3 className="pt-2 pl-2 text-xs">
-          {competition.notes[0].headline}
-        </h3>
+        <h3 className="pt-2 pl-2 text-xs">{competition.notes[0].headline}</h3>
       )}
     </div>
   );
