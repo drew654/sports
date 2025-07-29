@@ -5,12 +5,16 @@ import BaseballCompetitionTile from "../components/BaseballCompetitionTile";
 import DateSelector from "../components/DateSelector";
 import { formatDateToYYYYMMDD } from "../utilities";
 import { getSortedCompetitionsByStatus } from "../utilities";
+import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 const BaseballScoreboard = ({ slug, id }) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const date = searchParams.get("date");
   const apiUrl = `https://site.api.espn.com/apis/site/v2/sports/baseball/${slug}/scoreboard`;
   const [competitions, setCompetitions] = useState([]);
   const [league, setLeague] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const getLastCompetitionDate = async () => {
     const data = await fetchData(apiUrl);
@@ -47,7 +51,6 @@ const BaseballScoreboard = ({ slug, id }) => {
         today > lastCompetitionDate ? lastCompetitionDate : today;
 
       fetchEvents(formatDateToYYYYMMDD(dateToFetch));
-      setSelectedDate(dateToFetch);
     };
     init();
   }, []);
@@ -59,9 +62,9 @@ const BaseballScoreboard = ({ slug, id }) => {
           <h1 className="text-2xl font-bold mb-4 select-none">{league.name}</h1>
           <DateSelector
             league={league}
-            selectedDate={selectedDate}
+            selectedDate={date || formatDateToYYYYMMDD(new Date())}
             setSelectedDate={(date) => {
-              setSelectedDate(date);
+              router.push(`?date=${formatDateToYYYYMMDD(date)}`);
               fetchEvents(formatDateToYYYYMMDD(date));
             }}
           />
@@ -72,7 +75,7 @@ const BaseballScoreboard = ({ slug, id }) => {
           <BaseballCompetitionTile
             key={competition.id}
             slug={slug}
-            date={formatDateToYYYYMMDD(selectedDate)}
+            date={date || formatDateToYYYYMMDD(new Date())}
             competition={competition}
           />
         ))}

@@ -1,6 +1,8 @@
 import BaseballBases from "./BaseballBases";
+import { useRouter } from "next/navigation";
 
 const BaseballCompetitionTile = ({ slug, date, competition }) => {
+  const router = useRouter();
   const renderBroadcast = (broadcast) => {
     if (!broadcast) return null;
     return broadcast.split("/").map((part, idx) => (
@@ -25,7 +27,7 @@ const BaseballCompetitionTile = ({ slug, date, competition }) => {
                   : "opacity-50"
               }`}
               onClick={() => {
-                window.location.href = `/scoreboard/${slug}/${date}/${competition.id}`;
+                router.push(`/scoreboard/${slug}/${date}/${competition.id}`);
               }}
             >
               <div className="flex items-center">

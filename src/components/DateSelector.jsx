@@ -3,6 +3,7 @@ import {
   formatDateToMonthDay,
   getDayAbbreviation,
   getAllDatesInRange,
+  formatDateToYYYYMMDD,
 } from "../utilities";
 
 const DateSelector = ({ league, selectedDate, setSelectedDate }) => {
@@ -41,8 +42,7 @@ const DateSelector = ({ league, selectedDate, setSelectedDate }) => {
       ref={calendarRef}
     >
       {calendar.map((day) => {
-        const isSelected =
-          new Date(day).toDateString() === selectedDate.toDateString();
+        const isSelected = formatDateToYYYYMMDD(new Date(day)) === selectedDate;
         return (
           <div
             key={day}
