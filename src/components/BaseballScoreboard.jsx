@@ -23,6 +23,17 @@ const BaseballScoreboard = ({ slug, id }) => {
     return new Date(lastDate);
   };
 
+  const getDateToFetch = async () => {
+    if (date) {
+      return date;
+    }
+    const today = new Date();
+    const lastCompetitionDate = await getLastCompetitionDate();
+    return today > lastCompetitionDate
+      ? formatDateToYYYYMMDD(lastCompetitionDate)
+      : formatDateToYYYYMMDD(today);
+  };
+
   const fetchEvents = async (urlDate) => {
     const dateParam = urlDate ? `?dates=${urlDate}` : "";
     const apiURLWithDate = `${apiUrl}${dateParam}`;
@@ -45,12 +56,9 @@ const BaseballScoreboard = ({ slug, id }) => {
 
   useEffect(() => {
     const init = async () => {
-      const today = new Date();
-      const lastCompetitionDate = await getLastCompetitionDate();
-      const dateToFetch =
-        today > lastCompetitionDate ? lastCompetitionDate : today;
-
-      fetchEvents(formatDateToYYYYMMDD(dateToFetch));
+      const dateToFetch = await getDateToFetch();
+      router.replace(`?date=${dateToFetch}`);
+      fetchEvents(dateToFetch);
     };
     init();
   }, []);
@@ -62,10 +70,11 @@ const BaseballScoreboard = ({ slug, id }) => {
           <h1 className="text-2xl font-bold mb-4 select-none">{league.name}</h1>
           <DateSelector
             league={league}
-            selectedDate={date || formatDateToYYYYMMDD(new Date())}
+            selectedDate={date}
             setSelectedDate={(date) => {
-              router.push(`?date=${formatDateToYYYYMMDD(date)}`);
-              fetchEvents(formatDateToYYYYMMDD(date));
+              const formattedDate = formatDateToYYYYMMDD(date);
+              router.replace(`?date=${formattedDate}`);
+              fetchEvents(formattedDate);
             }}
           />
         </>
@@ -75,7 +84,7 @@ const BaseballScoreboard = ({ slug, id }) => {
           <BaseballCompetitionTile
             key={competition.id}
             slug={slug}
-            date={date || formatDateToYYYYMMDD(new Date())}
+            date={date}
             competition={competition}
           />
         ))}
