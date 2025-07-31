@@ -14,7 +14,15 @@ const BaseballCompetitionTile = ({ slug, date, competition }) => {
   };
 
   return (
-    <div className="border rounded shadow p-2 select-none">
+    <div
+      className="border rounded shadow p-2 select-none"
+      onClick={() => {
+        if (new Date(competition.date) > new Date()) {
+          return;
+        }
+        router.push(`/scoreboard/${slug}/${date}/${competition.id}`);
+      }}
+    >
       <div className="flex items-center min-w-0">
         <div className="flex-1 min-w-0 pl-2">
           {[0, 1].map((i) => (
@@ -26,9 +34,6 @@ const BaseballCompetitionTile = ({ slug, date, competition }) => {
                   ? ""
                   : "opacity-50"
               }`}
-              onClick={() => {
-                router.push(`/scoreboard/${slug}/${date}/${competition.id}`);
-              }}
             >
               <div className="flex items-center">
                 <img
