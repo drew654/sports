@@ -3,15 +3,16 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { fetchData } from "../../../../../utilities";
 import BaseballScoringSummary from "../../../../../components/BaseballScoringSummary";
+import BaseballBases from "../../../../../components/BaseballBases";
 
 const BaseballCompetitionPage = ({ params }) => {
   const unwrappedParams = React.use(params);
   const { league, date, competitionId } = unwrappedParams;
 
-  const apiUrl = `https://site.api.espn.com/apis/site/v2/sports/baseball/${league}/scoreboard?dates=${date}`;
   const [competition, setCompetition] = useState(null);
 
   const fetchEvents = async () => {
+    const apiUrl = `https://site.api.espn.com/apis/site/v2/sports/baseball/${league}/scoreboard?dates=${date}`;
     const data = await fetchData(apiUrl);
     const competition = data.events.find((event) => event.id === competitionId)[
       "competitions"
@@ -64,6 +65,27 @@ const BaseballCompetitionPage = ({ params }) => {
         </div>
         <h2 className="p-2 select-none">Scoring Summary</h2>
         <BaseballScoringSummary competition={competition} />
+        {competition.status.type.name === "STATUS_IN_PROGRESS" && (
+          <div className="mt-4 flex">
+            <div className="flex-1">
+              <h3 className="font-bold">PITCHER</h3>
+              <h4 className="text-sm">
+                {competition.situation.pitcher.athlete.shortName}
+              </h4>
+            </div>
+            <div className="flex-1">
+              <h3 className="font-bold">BATTER</h3>
+              <h4 className="text-sm">
+                {competition.situation.batter.athlete.shortName}
+              </h4>
+            </div>
+            <div className="flex-1">
+              <h4>B: {competition.situation.balls}</h4>
+              <h4>S: {competition.situation.strikes}</h4>
+            </div>
+            <BaseballBases situation={competition.situation} />
+          </div>
+        )}
       </div>
     )
   );
