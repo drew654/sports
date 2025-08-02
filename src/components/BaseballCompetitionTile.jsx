@@ -60,7 +60,14 @@ const BaseballCompetitionTile = ({ slug, date, competition }) => {
           <div className="border-l p-2 pl-4 min-w-[150px] flex justify-between">
             <div>
               <h2 className="text-xs font-bold text-red-600">
-                {competition.status.type.shortDetail}
+                {competition.status.type.shortDetail
+                  .split(",")
+                  .map((part, idx, arr) => (
+                    <span key={idx}>
+                      {part.trim()}
+                      {idx < arr.length - 1 && <br />}
+                    </span>
+                  ))}
               </h2>
               <h2 className="text-xs opacity-50">{competition.outsText}</h2>
               <h2 className="text-xs opacity-50">
