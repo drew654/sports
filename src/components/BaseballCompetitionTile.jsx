@@ -17,9 +17,6 @@ const BaseballCompetitionTile = ({ slug, date, competition }) => {
     <div
       className="border rounded shadow p-2 select-none"
       onClick={() => {
-        if (new Date(competition.date) > new Date()) {
-          return;
-        }
         router.push(`/scoreboard/${slug}/${date}/${competition.id}`);
       }}
     >

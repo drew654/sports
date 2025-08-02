@@ -14,9 +14,10 @@ const BaseballCompetitionPage = ({ params }) => {
   const fetchEvents = async () => {
     const apiUrl = `https://site.api.espn.com/apis/site/v2/sports/baseball/${league}/scoreboard?dates=${date}`;
     const data = await fetchData(apiUrl);
-    const competition = data.events.find((event) => event.id === competitionId)[
-      "competitions"
-    ][0];
+    const competition = data.events
+      .find((event) => event.id === competitionId)
+      .competitions.find((comp) => comp.id === competitionId);
+    console.log(competition);
     competition.competitors.sort((a, b) => {
       if (a.homeAway === b.homeAway) return 0;
       return a.homeAway === "home" ? 1 : -1;
@@ -63,8 +64,12 @@ const BaseballCompetitionPage = ({ params }) => {
             />
           </div>
         </div>
-        <h2 className="p-2 select-none">Scoring Summary</h2>
-        <BaseballScoringSummary competition={competition} />
+        {competition.competitors[0].linescores && (
+          <>
+            <h2 className="p-2 select-none">Scoring Summary</h2>
+            <BaseballScoringSummary competition={competition} />
+          </>
+        )}
         {competition.status.type.name === "STATUS_IN_PROGRESS" && (
           <div className="mt-4 flex">
             <div className="flex-1">
