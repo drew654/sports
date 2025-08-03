@@ -17,7 +17,6 @@ const BaseballCompetitionPage = ({ params }) => {
     const competition = data.events
       .find((event) => event.id === competitionId)
       .competitions.find((comp) => comp.id === competitionId);
-    console.log(competition);
     competition.competitors.sort((a, b) => {
       if (a.homeAway === b.homeAway) return 0;
       return a.homeAway === "home" ? 1 : -1;
@@ -47,6 +46,21 @@ const BaseballCompetitionPage = ({ params }) => {
                 {competition.competitors[0].team.abbreviation}
               </h2>
             </div>
+          </div>
+          <div className="flex flex-col items-center">
+            {competition.notes.length > 0 && (
+              <h2>{competition.notes[0].headline}</h2>
+            )}
+            <h2>{competition.broadcast}</h2>
+            {competition.status.type.name === "STATUS_RAIN_DELAY" ? (
+              <h2 className="text-xs font-bold text-red-600">
+                {competition.status.type.shortDetail}
+              </h2>
+            ) : (
+              <h2 className="text-xs font-bold">
+                {competition.status.type.shortDetail}
+              </h2>
+            )}
           </div>
           <div className="flex items-center">
             <div className="flex flex-col items-center">
