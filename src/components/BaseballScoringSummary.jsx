@@ -17,19 +17,23 @@ const BaseballScoringSummary = ({ competition }) => {
             <th className="border-r border-b px-2 py-1 text-center">H</th>
             <th className="border-b px-2 py-1 text-center">E</th>
           </tr>
-          {competition.competitors.map((competitor, index) => (
-            <tr key={index}>
+          {competition.competitors.map((competitor, competitorIndex) => (
+            <tr key={competitorIndex}>
               <td className="sticky left-0 bg-background border-r border-b px-2 py-1 text-center z-10">
                 {competitor.team.abbreviation}
               </td>
-              {competitor.linescores.map((inning) => (
-                <td
-                  key={inning.period}
-                  className="border-r border-b px-2 py-1 text-center"
-                >
-                  {inning.value}
-                </td>
-              ))}
+              {[...Array(competition.competitors[0].linescores.length)].map(
+                (_, linescoresIndex) => (
+                  <td
+                    key={linescoresIndex}
+                    className="border-r border-b px-2 py-1 text-center"
+                  >
+                    {competition.competitors[competitorIndex].linescores[
+                      linescoresIndex
+                    ]?.displayValue || "-"}
+                  </td>
+                )
+              )}
               <td className="border-r border-b px-2 py-1 text-center font-bold">
                 {competitor.score}
               </td>
