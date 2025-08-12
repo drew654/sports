@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { fetchData } from "../../../../../utilities";
 import BaseballScoringSummary from "../../../../../components/BaseballScoringSummary";
 import BaseballBases from "../../../../../components/BaseballBases";
+import BaseballBalls from "../../../../../components/BaseballBalls";
+import BaseballStrikes from "../../../../../components/BaseballStrikes";
 
 const BaseballCompetitionPage = ({ params }) => {
   const unwrappedParams = React.use(params);
@@ -31,7 +33,7 @@ const BaseballCompetitionPage = ({ params }) => {
   return (
     competition && (
       <div className="p-4">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-8">
           <div className="flex items-center">
             <img
               src={competition.competitors[0].team.logo}
@@ -57,9 +59,17 @@ const BaseballCompetitionPage = ({ params }) => {
                 {competition.status.type.shortDetail}
               </h2>
             ) : (
-              <h2 className="text-xs font-bold">
-                {competition.status.type.shortDetail}
-              </h2>
+              <>
+                <h2 className="text-xs font-bold">
+                  {competition.status.type.shortDetail}
+                </h2>
+                {competition.situation &&
+                  competition.situation.lastPlay.type.type !== "end-inning" && (
+                    <h2 className="text-xs font-bold">
+                      {competition.outsText}
+                    </h2>
+                  )}
+              </>
             )}
           </div>
           <div className="flex items-center">
@@ -79,32 +89,63 @@ const BaseballCompetitionPage = ({ params }) => {
           </div>
         </div>
         {competition.competitors[0].linescores && (
-          <>
-            <h2 className="p-2 select-none">Scoring Summary</h2>
-            <BaseballScoringSummary competition={competition} />
-          </>
+          <BaseballScoringSummary competition={competition} />
         )}
-        {competition.status.type.name === "STATUS_IN_PROGRESS" && (
-          <div className="mt-4 flex">
-            <div className="flex-1">
-              <h3 className="font-bold">PITCHER</h3>
-              <h4 className="text-sm">
-                {competition.situation.pitcher.athlete.shortName}
-              </h4>
+        {competition.status.type.name === "STATUS_IN_PROGRESS" &&
+          (competition.situation.dueUp ? (
+            <div className="mt-4 flex">
+              <div className="flex-1">
+                <h3 className="font-bold">
+                  DUE UP ({competition.situation.dueUp[0].batOrder})
+                </h3>
+                <h4 className="text-sm">
+                  {competition.situation.dueUp[0].athlete.shortName}
+                </h4>
+              </div>
+              <div className="flex-1">
+                <h3 className="font-bold">
+                  DUE UP ({competition.situation.dueUp[1].batOrder})
+                </h3>
+                <h4 className="text-sm">
+                  {competition.situation.dueUp[1].athlete.shortName}
+                </h4>
+              </div>
+              <div className="flex-1">
+                <h3 className="font-bold">
+                  DUE UP ({competition.situation.dueUp[2].batOrder})
+                </h3>
+                <h4 className="text-sm">
+                  {competition.situation.dueUp[2].athlete.shortName}
+                </h4>
+              </div>
             </div>
-            <div className="flex-1">
-              <h3 className="font-bold">BATTER</h3>
-              <h4 className="text-sm">
-                {competition.situation.batter.athlete.shortName}
-              </h4>
+          ) : (
+            <div className="mt-4 flex">
+              <div className="flex-1">
+                <h3 className="font-bold">PITCHER</h3>
+                <h4 className="text-sm">
+                  {competition.situation.pitcher.athlete.shortName}
+                </h4>
+              </div>
+              <div className="flex-1">
+                <h3 className="font-bold">BATTER</h3>
+                <h4 className="text-sm">
+                  {competition.situation.batter.athlete.shortName}
+                </h4>
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center">
+                  <h4 className="pr-2">B</h4>
+                  <BaseballBalls count={competition.situation.balls} />
+                </div>
+                <div className="flex items-center">
+                  <h4 className="pr-2">S</h4>
+                  <BaseballStrikes count={competition.situation.strikes} />
+                </div>
+              </div>
+              <BaseballBases situation={competition.situation} />
             </div>
-            <div className="flex-1">
-              <h4>B: {competition.situation.balls}</h4>
-              <h4>S: {competition.situation.strikes}</h4>
-            </div>
-            <BaseballBases situation={competition.situation} />
-          </div>
-        )}
+          ))}
       </div>
     )
   );

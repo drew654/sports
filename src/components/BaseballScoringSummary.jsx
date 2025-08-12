@@ -1,49 +1,77 @@
 const BaseballScoringSummary = ({ competition }) => {
   return (
-    <table className="w-full border text-sm sm:text-base select-none">
-      <tbody>
-        <tr>
-          <th></th>
-          {[...Array(9)].map((_, inning) => (
-            <th key={inning} className="border px-2 py-1 text-center">
-              {inning + 1}
-            </th>
-          ))}
-          <th className="border px-2 py-1 text-center">R</th>
-          <th className="border px-2 py-1 text-center">H</th>
-          <th className="border px-2 py-1 text-center">E</th>
-        </tr>
-        {competition.competitors.map((competitor, index) => (
-          <tr key={index}>
-            <td className="border px-2 py-1 text-center">
-              {competitor.team.abbreviation}
-            </td>
-            {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((inning) => (
-              <td key={inning} className="border px-2 py-1 text-center">
-                {competitor.linescores[inning]
-                  ? competitor.linescores[inning].value
-                  : "-"}
-              </td>
+    <div className="overflow-x-auto border rounded no-scrollbar">
+      <table className="w-full border-separate border-spacing-0 text-sm sm:text-base select-none">
+        <tbody>
+          <tr>
+            <th className="sticky left-0 bg-background border-r border-b px-2 py-1 z-10"></th>
+            {competition.competitors[0].linescores.map((inning) => (
+              <th
+                key={inning.period}
+                className="border-r border-b px-2 py-1 text-center"
+              >
+                {inning.period}
+              </th>
             ))}
-            <td className="border px-2 py-1 text-center font-bold">
-              {competitor.score}
-            </td>
-            <td className="border px-2 py-1 text-center font-bold">
-              {
-                competitor.statistics.find((stat) => stat.name === "hits")
-                  ?.displayValue
-              }
-            </td>
-            <td className="border px-2 py-1 text-center font-bold">
-              {
-                competitor.statistics.find((stat) => stat.name === "errors")
-                  ?.displayValue
-              }
-            </td>
+            <th className="border-r border-b px-2 py-1 text-center">R</th>
+            <th className="border-r border-b px-2 py-1 text-center">H</th>
+            <th className="border-b px-2 py-1 text-center">E</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+          {competition.competitors.map((competitor, competitorIndex) => (
+            <tr key={competitorIndex}>
+              <td
+                className={`sticky left-0 bg-background border-r ${
+                  competitorIndex === 0 ? "border-b" : ""
+                } px-2 py-1 text-center z-10`}
+              >
+                {competitor.team.abbreviation}
+              </td>
+              {[...Array(competition.competitors[0].linescores.length)].map(
+                (_, linescoresIndex) => (
+                  <td
+                    key={linescoresIndex}
+                    className={`border-r ${
+                      competitorIndex === 0 ? "border-b" : ""
+                    } px-2 py-1 text-center`}
+                  >
+                    {competition.competitors[competitorIndex].linescores[
+                      linescoresIndex
+                    ]?.displayValue || "-"}
+                  </td>
+                )
+              )}
+              <td
+                className={`border-r ${
+                  competitorIndex === 0 ? "border-b" : ""
+                } px-2 py-1 text-center font-bold`}
+              >
+                {competitor.score}
+              </td>
+              <td
+                className={`border-r ${
+                  competitorIndex === 0 ? "border-b" : ""
+                } px-2 py-1 text-center font-bold`}
+              >
+                {
+                  competitor.statistics.find((stat) => stat.name === "hits")
+                    ?.displayValue
+                }
+              </td>
+              <td
+                className={`${
+                  competitorIndex === 0 ? "border-b" : ""
+                } px-2 py-1 text-center font-bold`}
+              >
+                {
+                  competitor.statistics.find((stat) => stat.name === "errors")
+                    ?.displayValue
+                }
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
 
