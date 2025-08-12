@@ -13,6 +13,17 @@ const BaseballScoringSummary = ({ competition }) => {
                 {inning.period}
               </th>
             ))}
+            {competition.competitors[0].linescores.length < 9 &&
+              [...Array(9 - competition.competitors[0].linescores.length)].map(
+                (_, index) => (
+                  <th
+                    key={index}
+                    className="border-r border-b px-2 py-1 text-center"
+                  >
+                    {index + competition.competitors[0].linescores.length + 1}
+                  </th>
+                )
+              )}
             <th className="border-r border-b px-2 py-1 text-center">R</th>
             <th className="border-r border-b px-2 py-1 text-center">H</th>
             <th className="border-b px-2 py-1 text-center">E</th>
@@ -40,6 +51,19 @@ const BaseballScoringSummary = ({ competition }) => {
                   </td>
                 )
               )}
+              {competition.competitors[0].linescores.length < 9 &&
+                [
+                  ...Array(9 - competition.competitors[0].linescores.length),
+                ].map((_, index) => (
+                  <td
+                    key={index}
+                    className={`border-r ${
+                      competitorIndex === 0 ? "border-b" : ""
+                    } px-2 py-1 text-center`}
+                  >
+                    -
+                  </td>
+                ))}
               <td
                 className={`border-r ${
                   competitorIndex === 0 ? "border-b" : ""
