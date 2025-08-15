@@ -1,16 +1,15 @@
 "use client";
 import React from "react";
 import { useEffect, useState } from "react";
-import { fetchData } from "../../../../../utilities";
-import BaseballScoringSummary from "../../../../../components/BaseballScoringSummary";
-import BaseballBases from "../../../../../components/BaseballBases";
-import BaseballBalls from "../../../../../components/BaseballBalls";
-import BaseballStrikes from "../../../../../components/BaseballStrikes";
+import { fetchData } from "../../../../../../utilities";
+import BaseballScoringSummary from "../../../../../../components/BaseballScoringSummary";
+import BaseballBases from "../../../../../../components/BaseballBases";
+import BaseballBalls from "../../../../../../components/BaseballBalls";
+import BaseballStrikes from "../../../../../../components/BaseballStrikes";
 
 const BaseballCompetitionPage = ({ params }) => {
   const unwrappedParams = React.use(params);
   const { league, date, competitionId } = unwrappedParams;
-
   const [competition, setCompetition] = useState(null);
 
   const fetchEvents = async () => {

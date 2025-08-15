@@ -1,38 +1,22 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { fetchData } from "../utilities";
-import BaseballCompetitionTile from "../components/BaseballCompetitionTile";
-import DateSelector from "../components/DateSelector";
-import { formatDateToYYYYMMDD } from "../utilities";
-import { getSortedCompetitionsByStatus } from "../utilities";
+import { fetchData } from "../../../../utilities";
+import BaseballCompetitionTile from "../../../../components/BaseballCompetitionTile";
+import DateSelector from "../../../../components/DateSelector";
+import { formatDateToYYYYMMDD } from "../../../../utilities";
+import { getSortedCompetitionsByStatus } from "../../../../utilities";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 
-const BaseballScoreboard = ({ slug, id }) => {
+const BaseballScoreboardPage = ({ params }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const date = searchParams.get("date");
-  const apiUrl = `https://site.api.espn.com/apis/site/v2/sports/baseball/${slug}/scoreboard`;
+  const unwrappedParams = React.use(params);
+  const leagueParam = unwrappedParams.league;
   const [competitions, setCompetitions] = useState([]);
   const [league, setLeague] = useState(null);
-
-  const getLastCompetitionDate = async () => {
-    const data = await fetchData(apiUrl);
-    const calendar = data.leagues.find((league) => league.id === id).calendar;
-    const lastDate = calendar[calendar.length - 1];
-    return new Date(lastDate);
-  };
-
-  const getDateToFetch = async () => {
-    if (date) {
-      return date;
-    }
-    const today = new Date();
-    const lastCompetitionDate = await getLastCompetitionDate();
-    return today > lastCompetitionDate
-      ? formatDateToYYYYMMDD(lastCompetitionDate)
-      : formatDateToYYYYMMDD(today);
-  };
+  const apiUrl = `https://site.api.espn.com/apis/site/v2/sports/baseball/${leagueParam}/scoreboard`;
 
   const fetchEvents = async (urlDate) => {
     const dateParam = urlDate ? `?dates=${urlDate}` : "";
@@ -51,16 +35,11 @@ const BaseballScoreboard = ({ slug, id }) => {
       }
     );
     setCompetitions(sortedCompetitionsWithSortedCompetitors);
-    setLeague(data["leagues"].find((league) => league.id === id));
+    setLeague(data["leagues"].find((league) => league.slug === leagueParam));
   };
 
   useEffect(() => {
-    const init = async () => {
-      const dateToFetch = await getDateToFetch();
-      router.replace(`?date=${dateToFetch}`);
-      fetchEvents(dateToFetch);
-    };
-    init();
+    fetchEvents(date);
   }, []);
 
   return (
@@ -85,7 +64,7 @@ const BaseballScoreboard = ({ slug, id }) => {
         {competitions.map((competition) => (
           <BaseballCompetitionTile
             key={competition.id}
-            slug={slug}
+            slug={leagueParam}
             date={date}
             competition={competition}
           />
@@ -95,4 +74,4 @@ const BaseballScoreboard = ({ slug, id }) => {
   );
 };
 
-export default BaseballScoreboard;
+export default BaseballScoreboardPage;
