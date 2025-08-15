@@ -64,7 +64,7 @@ const BaseballScoreboardPage = ({ params }) => {
         {competitions.map((competition) => (
           <BaseballCompetitionTile
             key={competition.id}
-            slug={leagueParam}
+            slug={`baseball/${leagueParam}`}
             date={date}
             competition={competition}
           />
