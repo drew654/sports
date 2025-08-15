@@ -64,20 +64,22 @@ const BaseballScoreboard = ({ slug, id }) => {
   }, []);
 
   return (
-    <div className="p-4">
+    <>
       {league && (
-        <>
-          <h1 className="text-2xl font-bold mb-4 select-none">{league.name}</h1>
-          <DateSelector
-            league={league}
-            selectedDate={date}
-            setSelectedDate={(date) => {
-              const formattedDate = formatDateToYYYYMMDD(date);
-              router.replace(`?date=${formattedDate}`);
-              fetchEvents(formattedDate);
-            }}
-          />
-        </>
+        <div className="sticky top-0 bg-background z-20">
+          <h1 className="text-2xl font-bold p-4 select-none">{league.name}</h1>
+          <div className="">
+            <DateSelector
+              league={league}
+              selectedDate={date}
+              setSelectedDate={(date) => {
+                const formattedDate = formatDateToYYYYMMDD(date);
+                router.replace(`?date=${formattedDate}`);
+                fetchEvents(formattedDate);
+              }}
+            />
+          </div>
+        </div>
       )}
       <div className="grid grid-cols-1 gap-4">
         {competitions.map((competition) => (
@@ -89,7 +91,7 @@ const BaseballScoreboard = ({ slug, id }) => {
           />
         ))}
       </div>
-    </div>
+    </>
   );
 };
 
