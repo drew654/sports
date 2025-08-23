@@ -46,11 +46,17 @@ const BaseballCompetitionTile = ({ slug, date, competition }) => {
           ))}
         </div>
         <div className="flex flex-col items-center justify-end">
-          {[0, 1].map((i) => (
-            <h2 className="font-mono font-bold px-4" key={i}>
-              {competition.competitors[i].score}
-            </h2>
-          ))}
+          {[0, 1].map((i) =>
+            competition.status.type.name === "STATUS_SCHEDULED" ? (
+              <h2 className="font-mono px-4 text-sm" key={i}>
+                {competition.competitors[i].records[0].summary}
+              </h2>
+            ) : (
+              <h2 className="font-mono font-bold px-4" key={i}>
+                {competition.competitors[i].score}
+              </h2>
+            )
+          )}
         </div>
         {(competition.status.type.name === "STATUS_IN_PROGRESS" ||
           competition.status.type.name === "STATUS_RAIN_DELAY") && (
