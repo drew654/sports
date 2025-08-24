@@ -8,7 +8,7 @@ import BaseballBalls from "../../../../../../components/BaseballBalls";
 import BaseballStrikes from "../../../../../../components/BaseballStrikes";
 import NumberLineGraph from "../../../../../../components/NumberLineGraph";
 import {
-  decimalToPercentage,
+  decimalToWinningTeamPercentage,
   lastArrayElement,
 } from "../../../../../../utilities";
 
@@ -170,11 +170,15 @@ const BaseballCompetitionPage = ({ params }) => {
                       lastArrayElement(awayWinProbabilities) >= 0.5 ? 0 : 1
                     ].team.logo
                   }
-                  alt={competition.competitors[1].team.displayName}
+                  alt={
+                    competition.competitors[
+                      lastArrayElement(awayWinProbabilities) >= 0.5 ? 0 : 1
+                    ].team.displayName
+                  }
                   className="w-12 h-12 mr-2"
                 />
                 <h1 className="text-3xl font-bold">
-                  {decimalToPercentage(
+                  {decimalToWinningTeamPercentage(
                     lastArrayElement(awayWinProbabilities),
                     1
                   )}

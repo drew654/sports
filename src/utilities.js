@@ -77,7 +77,8 @@ export const lastArrayElement = (array) => {
   return array[array.length - 1];
 };
 
-export const decimalToPercentage = (decimal, fractionDigits = 0) => {
+export const decimalToWinningTeamPercentage = (decimal, fractionDigits = 0) => {
   if (decimal === 1) return "100%";
+  if (decimal < 0.5) decimal = 1 - decimal;
   return (decimal * 100).toFixed(fractionDigits) + "%";
 };
