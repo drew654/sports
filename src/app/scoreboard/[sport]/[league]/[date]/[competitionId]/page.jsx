@@ -31,11 +31,13 @@ const BaseballCompetitionPage = ({ params }) => {
     setCompetition(competition);
 
     if (
-      competition.status.type.name === "STATUS_IN_PROGRESS" ||
-      competition.status.type.name === "STATUS_FINAL"
+      league === "mlb" &&
+      (competition.status.type.name === "STATUS_IN_PROGRESS" ||
+        competition.status.type.name === "STATUS_FINAL")
     ) {
       const probabilitiesApiUrl = `https://sports.core.api.espn.com/v2/sports/baseball/leagues/${league}/events/${competitionId}/competitions/${competitionId}/probabilities?limit=300`;
       const probabilitiesData = await fetchData(probabilitiesApiUrl);
+      if (!probabilitiesData.items) return;
       setAwayWinProbabilities(
         probabilitiesData.items.map((item) => item.awayWinPercentage)
       );
