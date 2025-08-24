@@ -6,15 +6,25 @@ import BaseballScoringSummary from "../../../../../../components/BaseballScoring
 import BaseballBases from "../../../../../../components/BaseballBases";
 import BaseballBalls from "../../../../../../components/BaseballBalls";
 import BaseballStrikes from "../../../../../../components/BaseballStrikes";
+import NumberLineGraph from "../../../../../../components/NumberLineGraph";
+import {
+  decimalToPercentage,
+  lastArrayElement,
+} from "../../../../../../utilities";
 
 const BaseballCompetitionPage = ({ params }) => {
   const unwrappedParams = React.use(params);
   const { league, date, competitionId } = unwrappedParams;
   const [competition, setCompetition] = useState(null);
+  const [awayWinProbabilities, setAwayWinProbabilities] = useState(null);
 
   const fetchEvents = async () => {
     const apiUrl = `https://site.api.espn.com/apis/site/v2/sports/baseball/${league}/scoreboard?dates=${date}`;
+    const probabilitiesApiUrl = `https://sports.core.api.espn.com/v2/sports/baseball/leagues/${league}/events/${competitionId}/competitions/${competitionId}/probabilities?limit=300`;
+
     const data = await fetchData(apiUrl);
+    const probabilitiesData = await fetchData(probabilitiesApiUrl);
+
     const competition = data.events
       .find((event) => event.id === competitionId)
       .competitions.find((comp) => comp.id === competitionId);
@@ -22,7 +32,11 @@ const BaseballCompetitionPage = ({ params }) => {
       if (a.homeAway === b.homeAway) return 0;
       return a.homeAway === "home" ? 1 : -1;
     });
+
     setCompetition(competition);
+    setAwayWinProbabilities(
+      probabilitiesData.items.map((item) => item.awayWinPercentage)
+    );
   };
 
   useEffect(() => {
@@ -145,6 +159,51 @@ const BaseballCompetitionPage = ({ params }) => {
               <BaseballBases situation={competition.situation} />
             </div>
           ))}
+        {awayWinProbabilities && (
+          <div className="pt-16">
+            <div className="flex items-center justify-between">
+              <h1 className="text-xl font-bold">Win Probability</h1>
+              <div className="flex items-center">
+                <img
+                  src={
+                    competition.competitors[
+                      lastArrayElement(awayWinProbabilities) >= 0.5 ? 0 : 1
+                    ].team.logo
+                  }
+                  alt={competition.competitors[1].team.displayName}
+                  className="w-12 h-12 mr-2"
+                />
+                <h1 className="text-3xl font-bold">
+                  {decimalToPercentage(
+                    lastArrayElement(awayWinProbabilities),
+                    1
+                  )}
+                </h1>
+              </div>
+            </div>
+            <div className="flex items-center space-x-4">
+              <img
+                src={competition.competitors[0].team.logo}
+                alt={competition.competitors[0].team.displayName}
+                className="w-6 h-6 mr-2"
+              />
+              <h2 className="py-2 text-lg">
+                {competition.competitors[0].team.name}
+              </h2>
+            </div>
+            <NumberLineGraph numbers={awayWinProbabilities} />
+            <div className="flex items-center space-x-4">
+              <img
+                src={competition.competitors[1].team.logo}
+                alt={competition.competitors[1].team.displayName}
+                className="w-6 h-6 mr-2"
+              />
+              <h2 className="py-2 text-lg">
+                {competition.competitors[1].team.name}
+              </h2>
+            </div>
+          </div>
+        )}
       </div>
     )
   );
