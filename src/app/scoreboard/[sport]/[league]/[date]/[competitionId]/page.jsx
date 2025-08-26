@@ -11,12 +11,14 @@ import {
   decimalToWinningTeamPercentage,
   lastArrayElement,
 } from "../../../../../../utilities";
+import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
 
 const BaseballCompetitionPage = ({ params }) => {
   const unwrappedParams = React.use(params);
   const { league, date, competitionId } = unwrappedParams;
   const [competition, setCompetition] = useState(null);
   const [awayWinProbabilities, setAwayWinProbabilities] = useState(null);
+  const [plays, setPlays] = useState(null);
 
   const fetchEvents = async () => {
     const apiUrl = `https://site.api.espn.com/apis/site/v2/sports/baseball/${league}/scoreboard?dates=${date}`;
@@ -42,6 +44,10 @@ const BaseballCompetitionPage = ({ params }) => {
         probabilitiesData.items.map((item) => item.awayWinPercentage)
       );
     }
+
+    const playsApiUrl = `https://sports.core.api.espn.com/v2/sports/baseball/leagues/${league}/events/${competitionId}/competitions/${competitionId}/plays?limit=1000`;
+    const playsData = await fetchData(playsApiUrl);
+    setPlays(playsData.items.filter((play) => play.scoringPlay === true));
   };
 
   useEffect(() => {
@@ -211,6 +217,56 @@ const BaseballCompetitionPage = ({ params }) => {
                 {competition.competitors[1].team.name}
               </h2>
             </div>
+          </div>
+        )}
+        {plays?.length > 0 && (
+          <div className="pt-8">
+            <h1 className="text-xl font-bold">Scoring Summary</h1>
+            <table className="w-full">
+              <thead>
+                <tr>
+                  {[...Array(4)].map((_, index) => (
+                    <th key={index}></th>
+                  ))}
+                  <th>{competition.competitors[0].team.abbreviation}</th>
+                  <th>{competition.competitors[1].team.abbreviation}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {plays.map((play, index) => (
+                  <tr key={index} className="border-t border-b">
+                    <td className="p-2 h-10 w-10">
+                      <img
+                        src={
+                          competition.competitors[
+                            play.period.type === "Top" ? 0 : 1
+                          ].team.logo
+                        }
+                        alt={
+                          competition.competitors[
+                            play.period.type === "Top" ? 0 : 1
+                          ].team.displayName
+                        }
+                        className="w-5 h-5"
+                      />
+                    </td>
+                    <td className="p-2">
+                      {play.period.type === "Top" ? (
+                        <ChevronUpIcon className="h-4 w-4" />
+                      ) : (
+                        <ChevronDownIcon className="h-4 w-4" />
+                      )}
+                    </td>
+                    <td className="p-2">
+                      {play.period.displayValue.split(" ")[0]}
+                    </td>
+                    <td className="p-2">{play.text}</td>
+                    <td className="p-2">{play.awayScore}</td>
+                    <td className="p-2">{play.homeScore}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
       </div>
