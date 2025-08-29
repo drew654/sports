@@ -11,7 +11,7 @@ const NumberLineGraph = ({ numbers }) => {
   const data = numbers.map((value, index) => ({ index, value }));
 
   return (
-    <div className="w-full h-48 border rounded select-none">
+    <div className="w-full h-48 border rounded">
       <ResponsiveContainer>
         <LineChart data={data} className="pointer-events-none">
           <XAxis dataKey="index" hide />

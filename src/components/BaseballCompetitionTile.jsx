@@ -15,7 +15,7 @@ const BaseballCompetitionTile = ({ slug, date, competition }) => {
 
   return (
     <div
-      className="border rounded shadow p-2 select-none"
+      className="border rounded shadow p-2"
       onClick={() => {
         router.push(`/scoreboard/${slug}/${date}/${competition.id}`);
       }}

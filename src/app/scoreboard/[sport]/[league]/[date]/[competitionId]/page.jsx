@@ -56,7 +56,7 @@ const BaseballCompetitionPage = ({ params }) => {
 
   return (
     competition && (
-      <div className="p-4">
+      <div className="p-4 select-none">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center">
             <img
@@ -65,10 +65,10 @@ const BaseballCompetitionPage = ({ params }) => {
               className="w-12 h-12 mr-2"
             />
             <div className="flex flex-col items-center">
-              <h1 className="text-4xl font-bold select-none">
+              <h1 className="text-4xl font-bold">
                 {competition.competitors[0].score}
               </h1>
-              <h2 className="text-xs font-bold select-none">
+              <h2 className="text-xs font-bold">
                 {competition.competitors[0].team.abbreviation}
               </h2>
             </div>
@@ -98,10 +98,10 @@ const BaseballCompetitionPage = ({ params }) => {
           </div>
           <div className="flex items-center">
             <div className="flex flex-col items-center">
-              <h1 className="text-4xl font-bold select-none">
+              <h1 className="text-4xl font-bold">
                 {competition.competitors[1].score}
               </h1>
-              <h2 className="text-xs font-bold select-none">
+              <h2 className="text-xs font-bold">
                 {competition.competitors[1].team.abbreviation}
               </h2>
             </div>

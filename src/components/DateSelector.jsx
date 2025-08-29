@@ -54,10 +54,10 @@ const DateSelector = ({ league, selectedDate, setSelectedDate }) => {
               setSelectedDate(new Date(day));
             }}
           >
-            <h2 className="text-center select-none">
+            <h2 className="text-center">
               {getDayAbbreviation(day)}
             </h2>
-            <h2 className="text-center select-none">
+            <h2 className="text-center">
               {formatDateToMonthDay(day)}
             </h2>
           </div>

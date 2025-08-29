@@ -41,7 +41,7 @@ const SportTile = ({ router, name, sport, league: leagueParam }) => {
         router.push(`/scoreboard/${sport}/${leagueParam}?date=${date}`);
       }}
     >
-      <h1 className="text-2xl font-bold select-none">{name}</h1>
+      <h1 className="text-2xl font-bold">{name}</h1>
     </div>
   );
 };

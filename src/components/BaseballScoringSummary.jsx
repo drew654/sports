@@ -1,7 +1,7 @@
 const BaseballScoringSummary = ({ competition }) => {
   return (
     <div className="overflow-x-auto border rounded no-scrollbar">
-      <table className="w-full border-separate border-spacing-0 text-sm sm:text-base select-none">
+      <table className="w-full border-separate border-spacing-0 text-sm sm:text-base">
         <tbody>
           <tr>
             <th className="sticky left-0 bg-background border-r border-b px-2 py-1 z-10"></th>

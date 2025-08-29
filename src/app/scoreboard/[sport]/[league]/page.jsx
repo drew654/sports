@@ -43,10 +43,10 @@ const BaseballScoreboardPage = ({ params }) => {
   }, []);
 
   return (
-    <>
+    <div className="select-none">
       {league && (
         <div className="sticky top-0 bg-background z-20">
-          <h1 className="text-2xl font-bold p-4 select-none">{league.name}</h1>
+          <h1 className="text-2xl font-bold p-4">{league.name}</h1>
           <div className="">
             <DateSelector
               league={league}
@@ -70,7 +70,7 @@ const BaseballScoreboardPage = ({ params }) => {
           />
         ))}
       </div>
-    </>
+    </div>
   );
 };
 
