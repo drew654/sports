@@ -2,7 +2,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { fetchData } from "../../../../../../utilities";
-import BaseballScoringSummary from "../../../../../../components/BaseballScoringSummary";
+import BaseballLineScore from "../../../../../../components/BaseballLineScore";
 import BaseballBases from "../../../../../../components/BaseballBases";
 import BaseballBalls from "../../../../../../components/BaseballBalls";
 import BaseballStrikes from "../../../../../../components/BaseballStrikes";
@@ -113,7 +113,7 @@ const BaseballCompetitionPage = ({ params }) => {
           </div>
         </div>
         {competition.competitors[0].linescores && (
-          <BaseballScoringSummary competition={competition} />
+          <BaseballLineScore competition={competition} />
         )}
         {competition.status.type.name === "STATUS_IN_PROGRESS" &&
           (competition.situation.dueUp ? (

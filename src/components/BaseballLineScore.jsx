@@ -1,4 +1,4 @@
-const BaseballScoringSummary = ({ competition }) => {
+const BaseballLineScore = ({ competition }) => {
   return (
     <div className="overflow-x-auto border rounded no-scrollbar">
       <table className="w-full border-separate border-spacing-0 text-sm sm:text-base">
@@ -99,4 +99,4 @@ const BaseballScoringSummary = ({ competition }) => {
   );
 };
 
-export default BaseballScoringSummary;
+export default BaseballLineScore;
