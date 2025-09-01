@@ -7,6 +7,7 @@ import BaseballWinProbability from "../../../../../../components/BaseballWinProb
 import BaseballScoringSummary from "../../../../../../components/BaseballScoringSummary";
 import BaseballPitcherBatter from "../../../../../../components/BaseballPitcherBatter";
 import BaseballGameHeader from "../../../../../../components/BaseballGameHeader";
+import BaseballSeriesTile from "../../../../../../components/BaseballSeriesTile";
 
 const BaseballCompetitionPage = ({ params }) => {
   const unwrappedParams = React.use(params);
@@ -14,6 +15,7 @@ const BaseballCompetitionPage = ({ params }) => {
   const [competition, setCompetition] = useState(null);
   const [awayWinProbabilities, setAwayWinProbabilities] = useState(null);
   const [plays, setPlays] = useState(null);
+  const [seriesEvents, setSeriesEvents] = useState(null);
 
   const fetchEvents = async () => {
     const apiUrl = `https://site.api.espn.com/apis/site/v2/sports/baseball/${league}/scoreboard?dates=${date}`;
@@ -43,6 +45,14 @@ const BaseballCompetitionPage = ({ params }) => {
     const playsApiUrl = `https://sports.core.api.espn.com/v2/sports/baseball/leagues/${league}/events/${competitionId}/competitions/${competitionId}/plays?limit=1000`;
     const playsData = await fetchData(playsApiUrl);
     setPlays(playsData.items.filter((play) => play.scoringPlay === true));
+
+    const coreApiUrl = `https://sports.core.api.espn.com/v2/sports/baseball/leagues/${league}/events/${competitionId}/competitions/${competitionId}?limit=300`;
+    const coreData = await fetchData(coreApiUrl);
+    if (coreData.series.find((series) => series.type === "current")) {
+      setSeriesEvents(
+        coreData.series.find((series) => series.type === "current").events
+      );
+    }
   };
 
   useEffect(() => {
@@ -65,6 +75,18 @@ const BaseballCompetitionPage = ({ params }) => {
         )}
         {plays?.length > 0 && (
           <BaseballScoringSummary competition={competition} plays={plays} />
+        )}
+        {seriesEvents && (
+          <>
+            <h1 className="text-xl font-bold pt-8 pb-2">Current Series</h1>
+            {seriesEvents.sort().map((seriesEvent, index) => (
+              <BaseballSeriesTile
+                key={seriesEvent.$ref}
+                apiUrl={seriesEvent.$ref}
+                index={index}
+              />
+            ))}
+          </>
         )}
       </div>
     )

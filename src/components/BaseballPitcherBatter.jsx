@@ -1,6 +1,6 @@
 
-import BaseballBases from "./BaseballBalls";
-import BaseballBalls from "./BaseballBases";
+import BaseballBases from "./BaseballBases";
+import BaseballBalls from "./BaseballBalls";
 import BaseballStrikes from "./BaseballStrikes";
 
 const BaseballPitcherBatter = ({ competition }) =>
