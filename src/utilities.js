@@ -1,4 +1,8 @@
 export const fetchData = async (url) => {
+  if (url.startsWith("http://")) {
+    url = url.replace("http://", "https://");
+  }
+
   try {
     const response = await fetch(url);
     if (!response.ok) {
