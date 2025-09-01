@@ -87,7 +87,7 @@ const BaseballSeriesTile = ({ apiUrl, index }) => {
               ))}
             </div>
           )}
-          <div className="border-l p-2 pl-4 min-w-[150px]">
+          <div className="border-l p-2 pl-4 min-w-[100px]">
             <h2 className="text-xs opacity-50">Game {index + 1}</h2>
             {(status.type.name === "STATUS_SCHEDULED" ||
               status.type.name === "STATUS_FINAL") && (
