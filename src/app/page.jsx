@@ -10,7 +10,7 @@ const Sports = () => {
   ];
 
   return (
-    <div className="p-4">
+    <div className="p-4 select-none">
       {sports.map((sport) => (
         <SportTile key={sport.league} router={router} {...sport} />
       ))}
