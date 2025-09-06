@@ -8,6 +8,7 @@ import BaseballScoringSummary from "../../../../../../components/BaseballScoring
 import BaseballPitcherBatter from "../../../../../../components/BaseballPitcherBatter";
 import BaseballGameHeader from "../../../../../../components/BaseballGameHeader";
 import BaseballSeriesTile from "../../../../../../components/BaseballSeriesTile";
+import MatchupPredictor from "../../../../../../components/MatchupPredictor";
 
 const BaseballCompetitionPage = ({ params }) => {
   const unwrappedParams = React.use(params);
@@ -16,6 +17,7 @@ const BaseballCompetitionPage = ({ params }) => {
   const [awayWinProbabilities, setAwayWinProbabilities] = useState(null);
   const [plays, setPlays] = useState(null);
   const [seriesEvents, setSeriesEvents] = useState(null);
+  const [gameProjection, setGameProjection] = useState(null);
 
   const fetchEvents = async () => {
     const apiUrl = `https://site.api.espn.com/apis/site/v2/sports/baseball/${league}/scoreboard?dates=${date}`;
@@ -53,6 +55,16 @@ const BaseballCompetitionPage = ({ params }) => {
         coreData.series.find((series) => series.type === "current").events
       );
     }
+
+    const predictorApiUrl = `https://sports.core.api.espn.com/v2/sports/baseball/leagues/mlb/events/${competitionId}/competitions/${competitionId}/predictor`;
+    const predictorData = await fetchData(predictorApiUrl);
+    setGameProjection(
+      Number(
+        predictorData.homeTeam.statistics.find(
+          (stat) => stat.name === "gameProjection"
+        ).displayValue
+      )
+    );
   };
 
   useEffect(() => {
@@ -67,6 +79,12 @@ const BaseballCompetitionPage = ({ params }) => {
           <BaseballLineScore competition={competition} />
         )}
         <BaseballPitcherBatter competition={competition} />
+        {gameProjection && (
+          <MatchupPredictor
+            competition={competition}
+            gameProjection={gameProjection}
+          />
+        )}
         {awayWinProbabilities && (
           <BaseballWinProbability
             competition={competition}
