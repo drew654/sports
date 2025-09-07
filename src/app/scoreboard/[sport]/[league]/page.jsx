@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { fetchData } from "../../../../utilities";
+import { fetchData, getDateToFetch } from "../../../../utilities";
 import BaseballCompetitionTile from "../../../../components/BaseballCompetitionTile";
 import DateSelector from "../../../../components/DateSelector";
 import { formatDateToYYYYMMDD } from "../../../../utilities";
@@ -14,9 +14,11 @@ const BaseballScoreboardPage = ({ params }) => {
   const date = searchParams.get("date");
   const unwrappedParams = React.use(params);
   const leagueParam = unwrappedParams.league;
+  const sport = unwrappedParams.sport;
   const [competitions, setCompetitions] = useState([]);
   const [league, setLeague] = useState(null);
   const apiUrl = `https://site.api.espn.com/apis/site/v2/sports/baseball/${leagueParam}/scoreboard`;
+  const [dateToFetch, setDateToFetch] = useState(null);
 
   const fetchEvents = async (urlDate) => {
     const dateParam = urlDate ? `?dates=${urlDate}` : "";
@@ -36,6 +38,7 @@ const BaseballScoreboardPage = ({ params }) => {
     );
     setCompetitions(sortedCompetitionsWithSortedCompetitors);
     setLeague(data["leagues"].find((league) => league.slug === leagueParam));
+    setDateToFetch(await getDateToFetch(sport, leagueParam));
   };
 
   useEffect(() => {
@@ -46,7 +49,20 @@ const BaseballScoreboardPage = ({ params }) => {
     <div className="select-none">
       {league && (
         <div className="sticky top-0 bg-background z-20">
-          <h1 className="text-2xl font-bold p-4">{league.name}</h1>
+          <div
+            className="flex items-center"
+            onClick={() => {
+              router.replace(`?date=${dateToFetch}`);
+              fetchEvents(dateToFetch);
+            }}
+          >
+            <img
+              src={league.logos[0].href}
+              alt={league.logos[0].alt}
+              className="w-12 h-12 mx-2"
+            />
+            <h1 className="text-2xl font-bold">{league.name}</h1>
+          </div>
           <div className="">
             <DateSelector
               league={league}

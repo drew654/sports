@@ -86,3 +86,21 @@ export const decimalToWinningTeamPercentage = (decimal, fractionDigits = 0) => {
   if (decimal < 0.5) decimal = 1 - decimal;
   return (decimal * 100).toFixed(fractionDigits) + "%";
 };
+
+export const getLastCompetitionDate = async (sport, leagueParam) => {
+  const apiUrl = `https://site.api.espn.com/apis/site/v2/sports/${sport}/${leagueParam}/scoreboard`;
+  const data = await fetchData(apiUrl);
+  const calendar = data.leagues.find(
+    (league) => league.slug === leagueParam
+  ).calendar;
+  const lastDate = calendar[calendar.length - 1];
+  return new Date(lastDate);
+};
+
+export const getDateToFetch = async (sport, league) => {
+  const today = new Date();
+  const lastCompetitionDate = await getLastCompetitionDate(sport, league);
+  return today > lastCompetitionDate
+    ? formatDateToYYYYMMDD(lastCompetitionDate)
+    : formatDateToYYYYMMDD(today);
+};

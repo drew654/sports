@@ -1,30 +1,13 @@
 import { useEffect, useState } from "react";
-import { fetchData, formatDateToYYYYMMDD } from "../utilities";
+import { getDateToFetch } from "../utilities";
 
 const SportTile = ({ router, name, sport, league: leagueParam }) => {
   const apiUrl = `https://site.api.espn.com/apis/site/v2/sports/${sport}/${leagueParam}/scoreboard`;
   const [date, setDate] = useState("");
 
-  const getLastCompetitionDate = async () => {
-    const data = await fetchData(apiUrl);
-    const calendar = data.leagues.find(
-      (league) => league.slug === leagueParam
-    ).calendar;
-    const lastDate = calendar[calendar.length - 1];
-    return new Date(lastDate);
-  };
-
-  const getDateToFetch = async () => {
-    const today = new Date();
-    const lastCompetitionDate = await getLastCompetitionDate();
-    return today > lastCompetitionDate
-      ? formatDateToYYYYMMDD(lastCompetitionDate)
-      : formatDateToYYYYMMDD(today);
-  };
-
   useEffect(() => {
     const init = async () => {
-      const dateToFetch = await getDateToFetch();
+      const dateToFetch = await getDateToFetch(sport, leagueParam);
       setDate(dateToFetch);
     };
     init();
