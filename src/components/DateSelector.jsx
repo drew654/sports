@@ -47,19 +47,17 @@ const DateSelector = ({ league, selectedDate, setSelectedDate }) => {
           <div
             key={day}
             ref={isSelected ? selectedDayRef : null}
-            className={`${
-              isSelected ? "bg-foreground text-background" : ""
+            className={`border rounded ${
+              isSelected
+                ? "border-foreground font-bold"
+                : "border-transparent opacity-50"
             } flex-shrink-0 p-2 text-center`}
             onClick={() => {
               setSelectedDate(new Date(day));
             }}
           >
-            <h2 className="text-center">
-              {getDayAbbreviation(day)}
-            </h2>
-            <h2 className="text-center">
-              {formatDateToMonthDay(day)}
-            </h2>
+            <h2 className="text-center">{getDayAbbreviation(day)}</h2>
+            <h2 className="text-center">{formatDateToMonthDay(day)}</h2>
           </div>
         );
       })}
