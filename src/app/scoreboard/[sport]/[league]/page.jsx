@@ -7,6 +7,7 @@ import { formatDateToYYYYMMDD } from "../../../../utilities";
 import { getSortedCompetitionsByStatus } from "../../../../utilities";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
+import { Cog6ToothIcon } from "@heroicons/react/24/solid";
 
 const BaseballScoreboardPage = ({ params }) => {
   const router = useRouter();
@@ -49,21 +50,29 @@ const BaseballScoreboardPage = ({ params }) => {
     <div className="select-none">
       {league && (
         <div className="sticky top-0 bg-background z-20">
-          <div
-            className="flex items-center"
-            onClick={() => {
-              router.replace(`?date=${dateToFetch}`);
-              fetchEvents(dateToFetch);
-            }}
-          >
-            <img
-              src={league.logos[0].href}
-              alt={league.logos[0].alt}
-              className="w-12 h-12 mx-2"
+          <div className="flex items-center justify-between px-4">
+            <div
+              className="flex items-center space-x-2"
+              onClick={() => {
+                router.replace(`?date=${dateToFetch}`);
+                fetchEvents(dateToFetch);
+              }}
+            >
+              <img
+                src={league.logos[0].href}
+                alt={league.logos[0].alt}
+                className="w-12 h-12"
+              />
+              <h1 className="text-2xl font-bold">{league.name}</h1>
+            </div>
+            <Cog6ToothIcon
+              className="w-6 h-6"
+              onClick={() => {
+                router.push("/settings");
+              }}
             />
-            <h1 className="text-2xl font-bold">{league.name}</h1>
           </div>
-          <div className="">
+          <div>
             <DateSelector
               league={league}
               selectedDate={date}
