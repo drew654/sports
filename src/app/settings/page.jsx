@@ -1,19 +1,19 @@
 "use client";
 import { LifebuoyIcon } from "@heroicons/react/24/solid";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const SettingsPage = () => {
-  const [spoilerMode, setSpoilerMode] = useState(
-    localStorage.getItem("spoilerMode") === "true"
-  );
+  const [spoilerMode, setSpoilerMode] = useState(false);
+
+  useEffect(() => {
+    const storedSpoilerMode = localStorage.getItem("spoilerMode");
+    setSpoilerMode(storedSpoilerMode === "true");
+  }, []);
 
   const handleSpoilerModeToggle = () => {
-    setSpoilerMode(!spoilerMode);
-    if (spoilerMode) {
-      localStorage.removeItem("spoilerMode");
-    } else {
-      localStorage.setItem("spoilerMode", "true");
-    }
+    const newSpoilerMode = !spoilerMode;
+    setSpoilerMode(newSpoilerMode);
+    localStorage.setItem("spoilerMode", newSpoilerMode.toString());
   };
 
   return (
