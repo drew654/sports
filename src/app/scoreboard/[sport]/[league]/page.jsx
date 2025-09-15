@@ -97,13 +97,13 @@ const BaseballScoreboardPage = ({ params }) => {
           spoilerMode ? (
             <BaseballSpoilerCompetitionTile
               key={competition.id}
-              slug={`baseball/${leagueParam}`}
-              date={date}
               competition={competition}
             />
           ) : (
             <BaseballCompetitionTile
               key={competition.id}
+              slug={`baseball/${leagueParam}`}
+              date={date}
               competition={competition}
             />
           )
