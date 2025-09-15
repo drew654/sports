@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { fetchData, getDateToFetch } from "../../../../utilities";
 import BaseballCompetitionTile from "../../../../components/BaseballCompetitionTile";
+import BaseballSpoilerCompetitionTile from "../../../../components/BaseballSpoilerCompetitionTile";
 import DateSelector from "../../../../components/DateSelector";
 import { formatDateToYYYYMMDD } from "../../../../utilities";
 import { getSortedCompetitionsByStatus } from "../../../../utilities";
@@ -20,6 +21,12 @@ const BaseballScoreboardPage = ({ params }) => {
   const [league, setLeague] = useState(null);
   const apiUrl = `https://site.api.espn.com/apis/site/v2/sports/baseball/${leagueParam}/scoreboard`;
   const [dateToFetch, setDateToFetch] = useState(null);
+  const [spoilerMode, setSpoilerMode] = useState(false);
+
+  useEffect(() => {
+    const storedSpoilerMode = localStorage.getItem("spoilerMode");
+    setSpoilerMode(storedSpoilerMode === "true");
+  }, []);
 
   const fetchEvents = async (urlDate) => {
     const dateParam = urlDate ? `?dates=${urlDate}` : "";
@@ -86,14 +93,21 @@ const BaseballScoreboardPage = ({ params }) => {
         </div>
       )}
       <div className="grid grid-cols-1 gap-4">
-        {competitions.map((competition) => (
-          <BaseballCompetitionTile
-            key={competition.id}
-            slug={`baseball/${leagueParam}`}
-            date={date}
-            competition={competition}
-          />
-        ))}
+        {competitions.map((competition) =>
+          spoilerMode ? (
+            <BaseballSpoilerCompetitionTile
+              key={competition.id}
+              slug={`baseball/${leagueParam}`}
+              date={date}
+              competition={competition}
+            />
+          ) : (
+            <BaseballCompetitionTile
+              key={competition.id}
+              competition={competition}
+            />
+          )
+        )}
       </div>
     </div>
   );
