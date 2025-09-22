@@ -14,6 +14,7 @@ const SettingsPage = () => {
     const newSpoilerMode = !spoilerMode;
     setSpoilerMode(newSpoilerMode);
     localStorage.setItem("spoilerMode", newSpoilerMode.toString());
+    window.location.reload();
   };
 
   return (
