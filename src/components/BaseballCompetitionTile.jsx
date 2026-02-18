@@ -49,7 +49,7 @@ const BaseballCompetitionTile = ({ slug, date, competition }) => {
           {[0, 1].map((i) =>
             competition.status.type.name === "STATUS_SCHEDULED" ? (
               <h2 className="font-mono px-4 text-sm" key={i}>
-                {competition.competitors[i].records[0].summary}
+                {competition.competitors[i].records ? competition.competitors[i].records[0].summary : "0-0"}
               </h2>
             ) : (
               <h2 className="font-mono font-bold px-4" key={i}>
