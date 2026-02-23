@@ -28,7 +28,7 @@ const BaseballGameHeader = ({ competition }) => (
             {competition.status.type.shortDetail}
           </h2>
           {competition.situation &&
-            competition.situation.lastPlay.type.type !== "end-inning" && (
+            competition.situation.lastPlay?.type?.type !== "end-inning" && (
               <h2 className="text-xs font-bold">{competition.outsText}</h2>
             )}
         </>

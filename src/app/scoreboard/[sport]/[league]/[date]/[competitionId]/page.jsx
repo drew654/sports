@@ -40,7 +40,7 @@ const BaseballCompetitionPage = ({ params }) => {
       const probabilitiesData = await fetchData(probabilitiesApiUrl);
       if (!probabilitiesData.items) return;
       setAwayWinProbabilities(
-        probabilitiesData.items.map((item) => item.awayWinPercentage)
+        probabilitiesData.items.map((item) => item.awayWinPercentage),
       );
     }
 
@@ -50,21 +50,27 @@ const BaseballCompetitionPage = ({ params }) => {
 
     const coreApiUrl = `https://sports.core.api.espn.com/v2/sports/baseball/leagues/${league}/events/${competitionId}/competitions/${competitionId}?limit=300`;
     const coreData = await fetchData(coreApiUrl);
-    if (coreData.series.find((series) => series.type === "current")) {
+    if (
+      coreData.series &&
+      coreData.series.find((series) => series.type === "current")
+    ) {
       setSeriesEvents(
-        coreData.series.find((series) => series.type === "current").events
+        coreData.series.find((series) => series.type === "current").events,
       );
     }
 
     const predictorApiUrl = `https://sports.core.api.espn.com/v2/sports/baseball/leagues/mlb/events/${competitionId}/competitions/${competitionId}/predictor`;
     const predictorData = await fetchData(predictorApiUrl);
-    setGameProjection(
-      Number(
-        predictorData.homeTeam.statistics.find(
-          (stat) => stat.name === "gameProjection"
-        ).displayValue
-      )
-    );
+    if (predictorData) {
+        console.log(predictorData);
+      setGameProjection(
+        Number(
+          predictorData.homeTeam.statistics.find(
+            (stat) => stat.name === "gameProjection",
+          ).displayValue,
+        ),
+      );
+    }
   };
 
   useEffect(() => {

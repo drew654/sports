@@ -10,8 +10,7 @@ export const fetchData = async (url) => {
     }
     return await response.json();
   } catch (error) {
-    console.error("Fetch error:", error);
-    return {};
+    return null;
   }
 };
 

@@ -31,7 +31,7 @@ const BaseballPitcherBatter = ({ competition }) =>
         </h4>
       </div>
     </div>
-  ) : (
+  ) : competition.situation.pitcher ? (
     <div className="mt-4 flex">
       <div className="flex-1">
         <h3 className="font-bold">PITCHER</h3>
@@ -57,6 +57,6 @@ const BaseballPitcherBatter = ({ competition }) =>
       </div>
       <BaseballBases situation={competition.situation} />
     </div>
-  ));
+  ) : null);
 
 export default BaseballPitcherBatter;
