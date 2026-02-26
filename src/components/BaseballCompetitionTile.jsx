@@ -49,17 +49,20 @@ const BaseballCompetitionTile = ({ slug, date, competition }) => {
           {[0, 1].map((i) =>
             competition.status.type.name === "STATUS_SCHEDULED" ? (
               <h2 className="font-mono px-4 text-sm" key={i}>
-                {competition.competitors[i].records ? competition.competitors[i].records[0].summary : "0-0"}
+                {competition.competitors[i].records
+                  ? competition.competitors[i].records[0].summary
+                  : "0-0"}
               </h2>
-            ) : (
+            ) : competition.status.type.name === "STATUS_CANCELED" ? null : (
               <h2 className="font-mono font-bold px-4" key={i}>
                 {competition.competitors[i].score}
               </h2>
-            )
+            ),
           )}
         </div>
         {(competition.status.type.name === "STATUS_IN_PROGRESS" ||
-          competition.status.type.name === "STATUS_RAIN_DELAY") && (
+          competition.status.type.name === "STATUS_RAIN_DELAY" ||
+          competition.status.type.name === "STATUS_CANCELED") && (
           <div className="border-l p-2 pl-4 min-w-[150px] flex justify-between">
             <div>
               <h2 className="text-xs font-bold text-red-600">
@@ -77,7 +80,9 @@ const BaseballCompetitionTile = ({ slug, date, competition }) => {
                 {renderBroadcast(competition.broadcast)}
               </h2>
             </div>
-            <BaseballBases situation={competition.situation} />
+            {competition.status.type.name !== "STATUS_CANCELED" && (
+              <BaseballBases situation={competition.situation} />
+            )}
           </div>
         )}
         {competition.status.type.name === "STATUS_FINAL" && (
